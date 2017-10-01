@@ -27,7 +27,7 @@ public:
   void loadFileOld(TEXTURE_ID id, std::string file);
   SDL_Texture* createTexture(std::string file);
 
-  RET_NUMS render(TEXTURE_ID id = NONE, int start = 0, int stop = 0, SDL_Rect* dstRect = NULL, SDL_Rect* viewPort = NULL);
+  RET_NUMS render(TEXTURE_ID id = NONE, int start = 0, int stop = 0, SDL_Rect* dstRect = NULL, SDL_Rect* viewPort = NULL, double angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
   void drawBorder(SDL_Rect* rect, SDL_Color* color, SDL_Rect* viewPort = NULL);
   void renderText(std::string text, int x, int y, int size, SDL_Rect* viewPort = 0);
 

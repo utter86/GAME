@@ -1,6 +1,14 @@
 #include "textureeditor.h"
 RET_NUMS TextureEditor::init()
 {
+  SDL_Rect tmpRect = {0, 0, 50,50};
+  SDL_Color tmpColor = {0, 255, 255, 255};
+  _testView = {250,250, 700, 300};
+  _testObject.init(0);
+  _testObject.setTexture(ALPHA, 11, 11, tmpRect);
+  _testObject.fitRect(true);
+  _testObject.setPos(100, 100);
+  _testObject.setBorder(&tmpColor);
   return RET_SUCCESS;
 }
 RET_NUMS TextureEditor::render(Window* window)
@@ -14,11 +22,13 @@ RET_NUMS TextureEditor::render(Window* window)
   window->render(BACK, 0,0, NULL, NULL);
   window->drawBorder(window->getRect(), &color);
 
+  _testView = {250, 250, 700, 300};
+  _testObject.setViewport(&_testView);
+  _testObject.render(window);
+  window->drawBorder(&_testView, &color, NULL);
+
   window->render(TEST, 1, 4, &tmpRect, NULL);
   window->drawBorder(&tmpRect, &color);
-
-  window->renderText("HEJ!", 10, 10, XSMALL);
-
   window->render();
 
   return RET_SUCCESS;

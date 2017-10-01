@@ -4,6 +4,7 @@
 #include "window.h"
 #include "enums.h"
 #include "error.h"
+#include "gameobject.h"
 
 class TextureEditor
 {
@@ -13,6 +14,10 @@ public:
 
   void saveFile();
   void loadFile();
+
+  GameObject _testObject;
+
+  SDL_Rect _testView;
 
 private:
   Error _error;

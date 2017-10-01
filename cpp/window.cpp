@@ -147,7 +147,7 @@ SDL_Texture* Window::createTexture(std::string file)
   return tmpTexture;
 }
 
-RET_NUMS Window::render(TEXTURE_ID id, int start, int stop, SDL_Rect* dstRect, SDL_Rect* viewPort)
+RET_NUMS Window::render(TEXTURE_ID id, int start, int stop, SDL_Rect* dstRect, SDL_Rect* viewPort, double angle, SDL_RendererFlip flip)
 {
   if(id == NONE)
   {
@@ -178,32 +178,19 @@ RET_NUMS Window::render(TEXTURE_ID id, int start, int stop, SDL_Rect* dstRect, S
     {
       SDL_RenderSetViewport(_renderer, viewPort);
     }
-    SDL_RenderCopy(_renderer, tmpTexture, srcRect, dstRect);
+    SDL_RenderCopyEx(_renderer, tmpTexture, srcRect, dstRect, angle, NULL, flip);
   }
   return RET_SUCCESS;
 }
 void Window::drawBorder(SDL_Rect* rect, SDL_Color* color, SDL_Rect* viewPort)
 {
-  int x1 = 0, x2 = 0;
-  int y1 = 0, y2 = 0;
-  if(viewPort == NULL)
-  {
-    x1 = rect->x;
-    y1 = rect->y;
+  int x1 = rect->x;
+  int y1 = rect->y;
+  int x2 = rect->x + rect->w - 1;
+  int y2 = rect->y + rect->h - 1;
 
-    x2 = rect->x + rect->w - 1;
-    y2 = rect->y + rect->h - 1;
-  }
-  else
-  {
-    x1 = rect->x + viewPort->x;
-    y1 = rect->y + viewPort->y;
-
-    x2 = rect->x + rect->w + viewPort->x - 1;
-    y2 = rect->y + rect->h + viewPort->y - 1;
-  }
+  SDL_RenderSetViewport(_renderer, viewPort);
   SDL_SetRenderDrawColor(_renderer, color->r, color->g, color->b, color->a);
-
   SDL_RenderDrawLine(_renderer, x1, y1, x2, y1);
   SDL_RenderDrawLine(_renderer, x2, y1, x2, y2);
   SDL_RenderDrawLine(_renderer, x2, y2, x1, y2);
