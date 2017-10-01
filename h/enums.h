@@ -1,0 +1,25 @@
+#ifndef ENUMS_H
+#define ENUMS_H
+
+
+enum RET_NUMS
+{
+  RET_FAILED = -999, RET_SUCCESS,
+};
+
+enum FONT_SIZE
+{
+  XSMALL = 8, SMALL = 10, MEDIUM = 12, LARGE = 14, XLARGE = 16
+};
+
+enum TEXTURE_ID
+{
+  NONE = 100, TEST, ALPHA, BACK,
+};
+
+enum SCENE
+{
+  MAIN_MENU = 1000, TEXTURE_EDITOR,
+};
+
+#endif //ENUMS_H
