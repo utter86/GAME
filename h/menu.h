@@ -25,6 +25,7 @@ public:
   RET_NUMS setPos(int x, int y);
   RET_NUMS setBorder(SDL_Color* color = NULL);
   RET_NUMS setBGColor(SDL_Color* color);
+  RET_NUMS setTextColor(int id, SDL_Color* color);
 
   bool active;
 

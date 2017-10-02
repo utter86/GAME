@@ -12,6 +12,7 @@ public:
   RET_NUMS init();
   RET_NUMS render(Window* window);
 
+  RET_NUMS mouseMove();
   RET_NUMS keyUp(int key);
   RET_NUMS click(int button);
 
@@ -26,7 +27,7 @@ private:
   Menu _menu;
   enum BUTTONS
   {
-    ALL_BUTTONS = 100, LOAD_IMAGE, CLOSE,
+    LOAD_IMAGE = 100, CLOSE,
   };
   enum MENUS
   {

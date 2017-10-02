@@ -26,7 +26,15 @@ RET_NUMS TextureEditor::render(Window* window)
   return RET_SUCCESS;
 }
 
-
+RET_NUMS TextureEditor::mouseMove()
+{
+  int tmpInt = _menu.mouseMove();
+  SDL_Color color = {255,0,0,255};
+  _menu.setTextColor(-1, &color);
+  color = {0,255,0,255};
+  _menu.setTextColor(tmpInt, &color);
+  return RET_SUCCESS;
+}
 RET_NUMS TextureEditor::keyUp(int key)
 {
   switch(key)

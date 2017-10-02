@@ -138,3 +138,22 @@ RET_NUMS Menu::setBGColor(SDL_Color* color)
   }
   return RET_FAILED;
 }
+RET_NUMS Menu::setTextColor(int id, SDL_Color* color)
+{
+    for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
+    {
+      if(id == -1)
+      {
+        (*it)->setTextColor(color);
+      }
+      else
+      {
+        if((*it)->getID() == id)
+        {
+          (*it)->setTextColor(color);
+          return RET_SUCCESS;
+        }
+      }
+    }
+  return RET_FAILED;
+}

@@ -119,6 +119,10 @@ void GameObject::setBGColor(SDL_Color* color)
 {
   _bgColor = *color;
 }
+void GameObject::setTextColor(SDL_Color* color)
+{
+  _textColor = *color;
+}
 void GameObject::setPos(int x, int y)
 {
   _objX = x;

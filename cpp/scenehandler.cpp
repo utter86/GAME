@@ -45,11 +45,26 @@ RET_NUMS SceneHandler::doEvents()
       case SDL_MOUSEBUTTONUP:
         click(_events.button.button);
       break;
+      case SDL_MOUSEMOTION:
+        mouseMove();
+      break;
     }
   }
   return retNum;
 }
 
+RET_NUMS SceneHandler::mouseMove()
+{
+  switch(_activeScene)
+  {
+    case TEXTURE_EDITOR:
+      _textureEditor.mouseMove();
+    break;
+    default:
+    break;
+  }
+  return RET_SUCCESS;
+}
 RET_NUMS SceneHandler::keyUp(int key)
 {
   switch(_activeScene)
@@ -57,15 +72,19 @@ RET_NUMS SceneHandler::keyUp(int key)
     case TEXTURE_EDITOR:
       _textureEditor.keyUp(key);
     break;
+    default:
+    break;
   }
   return RET_SUCCESS;
 }
 RET_NUMS SceneHandler::click(int button)
 {
-  switch (_activeScene)
+  switch(_activeScene)
   {
     case TEXTURE_EDITOR:
       _textureEditor.click(button);
+    break;
+    default:
     break;
   }
   return RET_SUCCESS;
