@@ -10,6 +10,7 @@ RET_NUMS GameObject::init(int id)
   _objY = 0;
   _border = false;
   _borderColor = {255, 0, 0, 255};
+  _bgColor = {0, 0, 0, 0};
   return RET_SUCCESS;
 }
 
@@ -38,6 +39,7 @@ RET_NUMS GameObject::render(Window* window)
     _objectRect.x = _objX;
     _objectRect.y = _objY;
   }
+  window->fillRect(&_objectRect, &_bgColor);
   if(_textId != NONE)
   {
     window->render(_textId, _start, _stop, &_textureDestRect, &_objectRect);
@@ -111,6 +113,10 @@ void GameObject::setText(std::string text, int x, int y, int size)
   {
     fitRect();
   }
+}
+void GameObject::setBGColor(SDL_Color* color)
+{
+  _bgColor = *color;
 }
 void GameObject::setPos(int x, int y)
 {

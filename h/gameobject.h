@@ -23,6 +23,7 @@ public:
   //Setters
   void setTexture(TEXTURE_ID ID, int start, int stop, SDL_Rect dstRect, double angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
   void setText(std::string text, int x, int y, int size);
+  void setBGColor(SDL_Color* color);
   void setPos(int x, int y);
   void setSize(int w, int h);
   void setRect(SDL_Rect rect);
@@ -49,6 +50,7 @@ private:
   int _textY;
   int _textSize;
 
+  SDL_Color _bgColor;
   SDL_Color _borderColor;
 
   SDL_Rect _objectRect;

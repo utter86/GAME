@@ -7,17 +7,22 @@ RET_NUMS Menu::init(int id)
   *_menuRect = {0, 0, 0, 0};
   active = false;
   _borderColor = {0,0,0,0};
+  _bgColor = {0,0,0,0};
   return RET_SUCCESS;
 }
 
 RET_NUMS Menu::render(Window* window)
 {
-  SDL_Color color = {0, 255, 255, 255};
-  for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
+  if(active)
   {
-    (*it)->render(window);
+    window->fillRect(_menuRect, &_bgColor);
+    for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
+    {
+      (*it)->render(window);
+    }
+    window->drawBorder(_menuRect, &_borderColor);
   }
-  window->drawBorder(_menuRect, &color);
+
   return RET_SUCCESS;
 }
 
@@ -104,6 +109,14 @@ RET_NUMS Menu::setBorder(SDL_Color* color)
     _border = true;
     _borderColor = *color;
     return RET_SUCCESS;
+  }
+  return RET_FAILED;
+}
+RET_NUMS Menu::setBGColor(SDL_Color* color)
+{
+  if(color != NULL)
+  {
+    _bgColor = *color;
   }
   return RET_FAILED;
 }

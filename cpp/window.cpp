@@ -213,6 +213,11 @@ void Window::renderText(std::string text, int x, int y, int size, SDL_Rect* view
     dstRect.x += dstRect.w;
   }
 }
+void Window::fillRect(SDL_Rect* rect, SDL_Color* color)
+{
+  SDL_SetRenderDrawColor(_renderer, color->r, color->g, color->b, color->a);
+  SDL_RenderFillRect(_renderer, rect);
+}
 
 void Window::close()
 {

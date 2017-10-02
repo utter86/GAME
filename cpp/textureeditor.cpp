@@ -30,11 +30,13 @@ RET_NUMS TextureEditor::setScene()
 {
   RET_NUMS retNum = RET_FAILED;
   SDL_Color color = {255,0,0,255};
+  SDL_Color bgColor = {0,0,0,255};
   _menu.init(MENU);
   Button* buttonPtr = new Button;
   buttonPtr->init(LOAD_IMAGE);
   buttonPtr->setText("LOAD IMAGE", 0, 0, XSMALL);
   buttonPtr->setBorder(&color);
+  buttonPtr->setBGColor(&bgColor);
 
   Button* buttonPtr1 = new Button;
   buttonPtr1->init(CLOSE);
@@ -43,8 +45,12 @@ RET_NUMS TextureEditor::setScene()
 
   _menu.addButton(buttonPtr);
   _menu.addButton(buttonPtr1);
+  _menu.setBorder(&color);
+  color = {0,0,0,255};
+  _menu.setBGColor(&color);
   _menu.makeMenu();
   _menu.setPos( 50, 50);
+  _menu.active = true;
   return retNum;
 }
 

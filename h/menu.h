@@ -22,7 +22,7 @@ public:
   //Setters
   RET_NUMS setPos(int x, int y);
   RET_NUMS setBorder(SDL_Color* color = NULL);
-
+  RET_NUMS setBGColor(SDL_Color* color);
 
   bool active;
 
@@ -30,6 +30,7 @@ private:
   int _id;
   bool _border;
   SDL_Color _borderColor;
+  SDL_Color _bgColor;
   SDL_Rect* _menuRect = new SDL_Rect;
 
   std::vector<Button*> _buttonVector;
