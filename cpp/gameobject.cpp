@@ -44,6 +44,16 @@ RET_NUMS GameObject::render(Window* window)
   }
   if(_text.length() > 0)
   {
+    if(_textX == -1)
+    {
+      int textW = _textSize * _text.length();
+      _textX = _objectRect.w / 2 - textW / 2;
+    }
+    if(_textY == -1)
+    {
+      int textH = _textSize * 1.5;
+      _textY = _objectRect.h / 2 - textH / 2;
+    }
     window->renderText(_text, _textX, _textY, _textSize, &_objectRect);
   }
   if(_border)
@@ -136,12 +146,12 @@ void GameObject::fitRect(bool texture)
 {
   if(texture)
   {
-    _objectRect.w = _textureDestRect.x + _textureDestRect.w + 4;
-    _objectRect.h = _textureDestRect.y + _textureDestRect.h + 4;
+    _objectRect.w = _textureDestRect.x + _textureDestRect.w;
+    _objectRect.h = _textureDestRect.y + _textureDestRect.h;
   }
   else
   {
-    _objectRect.w = _text.length() * _textSize + 8;
-    _objectRect.h = _textSize * 1.5 + 8;
+    _objectRect.w = _text.length() * _textSize;
+    _objectRect.h = _textSize * 1.5;
   }
 }

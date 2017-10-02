@@ -13,7 +13,7 @@ public:
   RET_NUMS render(Window* window);
 
   RET_NUMS addButton(Button* button);
-  RET_NUMS makeMenu(bool xAxis = false, char alignment = 'l');
+  RET_NUMS makeMenu(bool xAxis = false);
 
   void close();
 

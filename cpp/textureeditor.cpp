@@ -33,17 +33,17 @@ RET_NUMS TextureEditor::setScene()
   _menu.init(MENU);
   Button* buttonPtr = new Button;
   buttonPtr->init(LOAD_IMAGE);
-  buttonPtr->setText("LOAD IMAGE!", 0, 0, XSMALL);
+  buttonPtr->setText("LOAD IMAGE", 0, 0, XSMALL);
   buttonPtr->setBorder(&color);
 
   Button* buttonPtr1 = new Button;
   buttonPtr1->init(CLOSE);
-  buttonPtr1->setText("CLOSE!", 0, 0, XLARGE);
+  buttonPtr1->setText("CLOSE", -1, -1, XLARGE);
   buttonPtr1->setBorder(&color);
 
   _menu.addButton(buttonPtr);
   _menu.addButton(buttonPtr1);
-  _menu.makeMenu(false, 'l');
+  _menu.makeMenu();
   _menu.setPos( 50, 50);
   return retNum;
 }

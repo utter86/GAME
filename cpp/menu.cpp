@@ -35,26 +35,34 @@ RET_NUMS Menu::addButton(Button* button)
   }
   return retNum;
 }
-RET_NUMS Menu::makeMenu(bool xAxis, char alignment)
+RET_NUMS Menu::makeMenu(bool xAxis)
 {
   SDL_Rect* tmpRect = new SDL_Rect;
-  if(!xAxis)
+  int newX = 2, newY = 2, newW = 0, newH = 0;
+
+  for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
   {
-    if(alignment == 'l')
+    tmpRect = (*it)->getRect();
+    newW = std::max(tmpRect->w, newW);
+    newH = std::max(tmpRect->h, newH);
+    (*it)->setPos(newX, newY);
+    if(!xAxis)
     {
-      int newX = 0, newY = 0, newW = 0, newH = 0;
-      for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
-      {
-        tmpRect = (*it)->getRect();
-      }
-      _menuRect->w = newW;
-      _menuRect->h = newH;
+      newY += tmpRect->h + 1;
+      newH = newY;
+      newW += 2;
+    }
+    else
+    {
+      newX += tmpRect->w  + 1;
+      newW = newX;
+      newH += 2;
     }
   }
-  else
-  {
 
-  }
+  _menuRect->w = newW;
+  _menuRect->h = newH + 2;
+
   tmpRect = NULL;
   delete tmpRect;
   return RET_SUCCESS;
@@ -95,5 +103,7 @@ RET_NUMS Menu::setBorder(SDL_Color* color)
   {
     _border = true;
     _borderColor = *color;
+    return RET_SUCCESS;
   }
+  return RET_FAILED;
 }
