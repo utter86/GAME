@@ -35,6 +35,7 @@ public:
 
   //Getters
   SDL_Renderer* getRenderer();
+  SDL_Texture* getSDLTexture(TEXTURE_ID id);
   SDL_Rect* getRect(TEXTURE_ID id = NONE, int rectNum = 0);
   int getAlphaPos(char tmpChar);
   //Setters

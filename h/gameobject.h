@@ -8,7 +8,7 @@
 class GameObject
 {
 public:
-  RET_NUMS init(int id, SDL_Rect* viewPort = NULL);
+  RET_NUMS init(int id);
 
   bool mouseMove();
 
@@ -56,6 +56,14 @@ private:
   SDL_Rect* _viewPort;
 
   Error _error;
+};
+
+class Button: public GameObject
+{
+public:
+
+private:
+
 };
 
 #endif //GAMEOBJECT_H

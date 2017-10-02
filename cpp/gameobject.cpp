@@ -1,7 +1,7 @@
 #include "gameobject.h"
 
 
-RET_NUMS GameObject::init(int id, SDL_Rect* viewPort)
+RET_NUMS GameObject::init(int id)
 {
   close();
   _id = id;
@@ -9,7 +9,6 @@ RET_NUMS GameObject::init(int id, SDL_Rect* viewPort)
   _objX = 0;
   _objY = 0;
   _border = false;
-  _viewPort = viewPort;
   _borderColor = {255, 0, 0, 255};
   return RET_SUCCESS;
 }

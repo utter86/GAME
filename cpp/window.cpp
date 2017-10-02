@@ -42,6 +42,7 @@ RET_NUMS Window::init(WindowSettings settings)
   _frames = 3;
   _speed = 10;
   _frame = 0;
+  _acctualFrame = 0;
 
   loadMedia();
   return RET_SUCCESS;
@@ -164,10 +165,12 @@ RET_NUMS Window::render(TEXTURE_ID id, int start, int stop, SDL_Rect* dstRect, S
   else
   {
     int rectNum = _acctualFrame + start;
-    if(_acctualFrame + start > stop)
+
+    if(rectNum > stop)
     {
       rectNum = start;
     }
+
     SDL_Texture* tmpTexture = _textureFolder.getSDLTexture(id);
     SDL_Rect* srcRect = _textureFolder.getRect(id, rectNum);
     if(viewPort == NULL)
@@ -221,6 +224,10 @@ void Window::close()
 SDL_Renderer* Window::getRenderer()
 {
   return _renderer;
+}
+SDL_Texture* Window::getSDLTexture(TEXTURE_ID id)
+{
+  return _textureFolder.getSDLTexture(id);
 }
 SDL_Rect* Window::getRect(TEXTURE_ID id, int rectNum)
 {
