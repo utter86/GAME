@@ -18,6 +18,8 @@ RET_NUMS TextureEditor::render(Window* window)
   window->render(TEST, 1, 4, &tmpRect, NULL);
   window->drawBorder(&tmpRect, &color);
 
+  _menu.render(window);
+
   window->render();
 
   return RET_SUCCESS;
@@ -27,8 +29,22 @@ RET_NUMS TextureEditor::render(Window* window)
 RET_NUMS TextureEditor::setScene()
 {
   RET_NUMS retNum = RET_FAILED;
+  SDL_Color color = {255,0,0,255};
+  _menu.init(MENU);
   Button* buttonPtr = new Button;
   buttonPtr->init(LOAD_IMAGE);
+  buttonPtr->setText("LOAD IMAGE!", 0, 0, XSMALL);
+  buttonPtr->setBorder(&color);
+
+  Button* buttonPtr1 = new Button;
+  buttonPtr1->init(CLOSE);
+  buttonPtr1->setText("CLOSE!", 0, 0, XLARGE);
+  buttonPtr1->setBorder(&color);
+
+  _menu.addButton(buttonPtr);
+  _menu.addButton(buttonPtr1);
+  _menu.makeMenu(false, 'l');
+  _menu.setPos( 50, 50);
   return retNum;
 }
 

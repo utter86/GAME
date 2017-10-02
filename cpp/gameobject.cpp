@@ -44,7 +44,7 @@ RET_NUMS GameObject::render(Window* window)
   }
   if(_text.length() > 0)
   {
-    //window->renderText(_text, _textRealX, _textRealY, _textSize, &_objectRect);
+    window->renderText(_text, _textX, _textY, _textSize, &_objectRect);
   }
   if(_border)
   {

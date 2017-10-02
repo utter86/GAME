@@ -4,7 +4,7 @@
 #include "window.h"
 #include "enums.h"
 #include "error.h"
-#include "gameobject.h"
+#include "menu.h"
 
 class TextureEditor
 {
@@ -17,11 +17,18 @@ public:
 
   void saveFile();
   void loadFile();
+  
 private:
   Error _error;
+
+  Menu _menu;
   enum BUTTONS
   {
-    ALL_BUTTONS = 100, LOAD_IMAGE,
+    ALL_BUTTONS = 100, LOAD_IMAGE, CLOSE,
+  };
+  enum MENUS
+  {
+    MENU = 1,
   };
 };
 
