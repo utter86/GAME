@@ -11,6 +11,7 @@ RET_NUMS GameObject::init(int id)
   _border = false;
   _borderColor = {255, 0, 0, 255};
   _bgColor = {0, 0, 0, 0};
+  _textColor = {255,0,0,255};
   return RET_SUCCESS;
 }
 
@@ -20,10 +21,10 @@ bool GameObject::mouseMove()
   int x; int y;
   SDL_GetMouseState(&x, &y);
   if(x > _objectRect.x && x < _objectRect.x + _objectRect.w &&
-    y > _objectRect.y && y < _objectRect.y + _objectRect.h)
-    {
-      retBool = true;
-    }
+  y > _objectRect.y && y < _objectRect.y + _objectRect.h)
+  {
+    retBool = true;
+  }
   return retBool;
 }
 
@@ -56,7 +57,7 @@ RET_NUMS GameObject::render(Window* window)
       int textH = _textSize * 1.5;
       _textY = _objectRect.h / 2 - textH / 2;
     }
-    window->renderText(_text, _textX, _textY, _textSize, &_objectRect);
+    window->renderText(_text, _textX, _textY, _textSize, &_textColor, &_objectRect);
   }
   if(_border)
   {
@@ -103,7 +104,7 @@ void GameObject::setTexture(TEXTURE_ID ID, int start, int stop, SDL_Rect dstRect
   _textureY = dstRect.y;
   _textureDestRect = dstRect;
 }
-void GameObject::setText(std::string text, int x, int y, int size)
+void GameObject::setText(std::string text, int x, int y, int size, SDL_Color* color)
 {
   _text = text;
   _textX = x;

@@ -36,22 +36,39 @@ RET_NUMS SceneHandler::doEvents()
     switch(_events.type)
     {
       case SDL_KEYUP:
-        switch(_events.key.keysym.sym)
+        if(_events.key.keysym.sym == SDLK_F12)
         {
-          case SDLK_F12:
-            return RET_FAILED;
-          break;
-          case SDLK_F1:
-
-          break;
-          case SDLK_F2:
-
-          break;
+          return RET_FAILED;
         }
+        keyUp(_events.key.keysym.sym);
+      break;
+      case SDL_MOUSEBUTTONUP:
+        click(_events.button.button);
       break;
     }
   }
   return retNum;
+}
+
+RET_NUMS SceneHandler::keyUp(int key)
+{
+  switch(_activeScene)
+  {
+    case TEXTURE_EDITOR:
+      _textureEditor.keyUp(key);
+    break;
+  }
+  return RET_SUCCESS;
+}
+RET_NUMS SceneHandler::click(int button)
+{
+  switch (_activeScene)
+  {
+    case TEXTURE_EDITOR:
+      _textureEditor.click(button);
+    break;
+  }
+  return RET_SUCCESS;
 }
 
 void SceneHandler::render(Window* window)

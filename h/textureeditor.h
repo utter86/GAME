@@ -12,12 +12,14 @@ public:
   RET_NUMS init();
   RET_NUMS render(Window* window);
 
+  RET_NUMS keyUp(int key);
+  RET_NUMS click(int button);
 
   RET_NUMS setScene();
 
   void saveFile();
   void loadFile();
-  
+
 private:
   Error _error;
 

@@ -10,7 +10,25 @@ RET_NUMS Menu::init(int id)
   _bgColor = {0,0,0,0};
   return RET_SUCCESS;
 }
-
+int Menu::mouseMove()
+{
+  int retInt = RET_FAILED;
+  int x, y;
+  SDL_GetMouseState(&x, &y);
+  if(x > _menuRect->x && x < _menuRect->x + _menuRect->w &&
+    y > _menuRect->y && y < _menuRect->y + _menuRect->h)
+  {
+    retInt = RET_SUCCESS;
+    for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
+    {
+      if((*it)->mouseMove())
+      {
+        retInt = (*it)->getID();
+      }
+    }
+  }
+  return retInt;
+}
 RET_NUMS Menu::render(Window* window)
 {
   if(active)

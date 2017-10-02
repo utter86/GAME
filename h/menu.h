@@ -10,6 +10,7 @@ class Menu
 {
 public:
   RET_NUMS init(int id);
+  int mouseMove();
   RET_NUMS render(Window* window);
 
   RET_NUMS addButton(Button* button);
@@ -19,6 +20,7 @@ public:
 
   //Getters
   Button* getButton(int id);
+
   //Setters
   RET_NUMS setPos(int x, int y);
   RET_NUMS setBorder(SDL_Color* color = NULL);

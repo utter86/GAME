@@ -29,7 +29,7 @@ public:
 
   RET_NUMS render(TEXTURE_ID id = NONE, int start = 0, int stop = 0, SDL_Rect* dstRect = NULL, SDL_Rect* viewPort = NULL, double angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
   void drawBorder(SDL_Rect* rect, SDL_Color* color, SDL_Rect* viewPort = NULL);
-  void renderText(std::string text, int x, int y, int size, SDL_Rect* viewPort = 0);
+  void renderText(std::string text, int x, int y, int size, SDL_Color* color = NULL, SDL_Rect* viewPort = NULL);
   void fillRect(SDL_Rect* rect, SDL_Color* color);
 
   void close();
@@ -41,6 +41,7 @@ public:
   int getAlphaPos(char tmpChar);
   //Setters
   RET_NUMS setRenderer(SDL_Renderer* renderer);
+  RET_NUMS setColorMod(TEXTURE_ID id, SDL_Color* color);
 private:
 
   //Window

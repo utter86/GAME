@@ -17,6 +17,8 @@ public:
 private:
   RET_NUMS initScene(SCENE scene);
   RET_NUMS doEvents();
+  RET_NUMS keyUp(int key);
+  RET_NUMS click(int button);
   void render(Window* window);
 
   SCENE _activeScene;

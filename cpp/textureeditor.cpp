@@ -1,4 +1,5 @@
 #include "textureeditor.h"
+
 RET_NUMS TextureEditor::init()
 {
   setScene();
@@ -26,6 +27,32 @@ RET_NUMS TextureEditor::render(Window* window)
 }
 
 
+RET_NUMS TextureEditor::keyUp(int key)
+{
+  switch(key)
+  {
+    case SDLK_F1:
+
+    break;
+  }
+  return RET_SUCCESS;
+}
+RET_NUMS TextureEditor::click(int button)
+{
+  switch(button)
+  {
+    case SDL_BUTTON_LEFT:
+      if(_menu.mouseMove() == CLOSE)
+      {
+        exit(2);
+      }
+    break;
+    case SDL_BUTTON_RIGHT:
+
+    break;
+  }
+  return RET_SUCCESS;
+}
 RET_NUMS TextureEditor::setScene()
 {
   RET_NUMS retNum = RET_FAILED;

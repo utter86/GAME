@@ -199,12 +199,12 @@ void Window::drawBorder(SDL_Rect* rect, SDL_Color* color, SDL_Rect* viewPort)
   SDL_RenderDrawLine(_renderer, x2, y2, x1, y2);
   SDL_RenderDrawLine(_renderer, x1, y2, x1, y1);
 }
-void Window::renderText(std::string text, int x, int y, int size, SDL_Rect* viewPort)
+void Window::renderText(std::string text, int x, int y, int size, SDL_Color* color, SDL_Rect* viewPort)
 {
   char tmpChar;
   int alphaPos;
   SDL_Rect dstRect = {x, y, size, int(size * 1.5)};
-
+  setColorMod(ALPHA, color);
   for(std::string::iterator it = text.begin(); it != text.end(); it++)
   {
     tmpChar = std::toupper(*it);
@@ -426,4 +426,13 @@ RET_NUMS Window::setRenderer(SDL_Renderer* renderer)
 {
   _renderer = renderer;
   return RET_SUCCESS;
+}
+RET_NUMS Window::setColorMod(TEXTURE_ID id, SDL_Color* color)
+{
+  if(color != NULL)
+  {
+    SDL_SetTextureColorMod(_textureFolder.getSDLTexture(id), color->r, color->g, color->b);
+    return RET_SUCCESS;
+  }
+  return RET_FAILED;
 }
