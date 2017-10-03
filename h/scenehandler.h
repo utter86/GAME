@@ -11,7 +11,7 @@
 class SceneHandler
 {
 public:
-  RET_NUMS init();
+  RET_NUMS init(Window* window);
   RET_NUMS update(Window* window);
 
 private:
@@ -23,6 +23,9 @@ private:
   RET_NUMS click(int button);
 
   void render(Window* window);
+
+
+  Window* _window;
 
   SCENE _activeScene;
 

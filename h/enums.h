@@ -14,7 +14,7 @@ enum FONT_SIZE
 
 enum TEXTURE_ID
 {
-  NONE = 100, TEST, ALPHA, BACK,
+  NONE = 100, TEST, ALPHA, BACK, IN_FILE, 
 };
 
 enum SCENE

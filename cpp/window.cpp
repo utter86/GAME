@@ -17,7 +17,7 @@ RET_NUMS Window::init(WindowSettings settings)
   }
 
   //Create window
-  _window = SDL_CreateWindow("-", settings.pos, settings.pos, settings.w, settings.h, SDL_WINDOW_ALLOW_HIGHDPI | settings.windowMode);
+  _window = SDL_CreateWindow("-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, settings.w, settings.h, SDL_WINDOW_ALLOW_HIGHDPI | settings.windowMode);
   if(_window == NULL)
   {
     _error.error("FAILED TO CREATE WINDOW!", SDL_GetError());
@@ -115,6 +115,40 @@ void Window::loadFileOld(TEXTURE_ID id, std::string file)
     }
   }
   textureFile.close();
+}
+void Window::loadPNG(TEXTURE_ID id, std::string file)
+{
+  //Add Texture
+  SDL_Surface* tmpSurface = NULL;
+  SDL_Texture* tmpTexture = NULL;
+
+  //Load the file
+  tmpSurface = IMG_Load(file.c_str());
+  if (tmpSurface == NULL)
+  {
+    _error.error("Failed to load image", IMG_GetError());
+  }
+  else
+  {
+    //Set color key
+    SDL_SetColorKey(tmpSurface, SDL_TRUE, SDL_MapRGB(tmpSurface->format, 0, 255, 255));
+
+    //Creat the texture
+    tmpTexture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
+    if(tmpTexture == NULL)
+    {
+      _error.error("Failed to creat Texture from surface", SDL_GetError());
+      exit(-1);
+    }
+    else
+    {
+      SDL_SetTextureBlendMode(tmpTexture, SDL_BLENDMODE_BLEND);
+    }
+  }
+  SDL_Rect tmpRect;
+  SDL_GetClipRect(tmpSurface, &tmpRect);
+  _textureFolder.addTexture(id, tmpTexture);
+  _textureFolder.addRect(id, 0, tmpRect);
 }
 SDL_Texture* Window::createTexture(std::string file)
 {

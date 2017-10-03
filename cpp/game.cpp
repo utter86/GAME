@@ -17,12 +17,17 @@ RET_NUMS Game::init(std::string file)
   {
     size_t inSize = SDL_RWsize(settingsFile);
     WindowSettings* settings = (WindowSettings*)malloc(inSize + 1);
-    SDL_RWread(settingsFile, settings, inSize, inSize);
+    SDL_RWread(settingsFile, settings, inSize, 1);
     SDL_RWclose(settingsFile);
     windowSettings = *settings;
   }
+  std::cout << "W: " << windowSettings.w << '\n';
+  std::cout << "H: " << windowSettings.h << '\n';
+  std::cout << "WINDOW: " << windowSettings.windowMode << '\n';
+  std::cout << "VSYNC: " << windowSettings.vsync << '\n';
+
   _window.init(windowSettings);
-  _sceneHandeler.init();
+  _sceneHandeler.init(&_window);
   return RET_SUCCESS;
 }
 

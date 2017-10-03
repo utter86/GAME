@@ -1,8 +1,9 @@
 #include "scenehandler.h"
 
 //Public
-RET_NUMS SceneHandler::init()
+RET_NUMS SceneHandler::init(Window* window)
 {
+  _window = window;
   initScene(TEXTURE_EDITOR);
   return RET_SUCCESS;
 }
@@ -23,7 +24,7 @@ RET_NUMS SceneHandler::initScene(SCENE scene)
       _mainMenu.init();
     break;
     case TEXTURE_EDITOR:
-      _textureEditor.init();
+      _textureEditor.init(_window);
     break;
   }
   return RET_SUCCESS;
@@ -98,7 +99,7 @@ void SceneHandler::render(Window* window)
       _mainMenu.render(window);
     break;
     case TEXTURE_EDITOR:
-      _textureEditor.render(window);
+      _textureEditor.render();
     break;
   }
 }

@@ -9,8 +9,8 @@
 class TextureEditor
 {
 public:
-  RET_NUMS init();
-  RET_NUMS render(Window* window);
+  RET_NUMS init(Window* window);
+  RET_NUMS render();
 
   RET_NUMS mouseMove();
   RET_NUMS keyUp(int key);
@@ -22,9 +22,15 @@ public:
   void loadFile();
 
 private:
+  //Window
+  Window* _window;
+  SDL_Rect _inFileRect;
+
+  Menu _rectMenu;
+  Menu _menu;
   Error _error;
 
-  Menu _menu;
+
   enum BUTTONS
   {
     LOAD_IMAGE = 100, CLOSE,

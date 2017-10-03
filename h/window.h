@@ -12,10 +12,10 @@
 
 struct WindowSettings
 {
-  int w; int h;
+  int w;
+  int h;
   int windowMode;
   int vsync;
-  int pos = SDL_WINDOWPOS_UNDEFINED;
 };
 
 class Window
@@ -25,6 +25,7 @@ public:
 
   RET_NUMS loadMedia();
   void loadFileOld(TEXTURE_ID id, std::string file);
+  void loadPNG(TEXTURE_ID id, std::string file);
   SDL_Texture* createTexture(std::string file);
 
   RET_NUMS render(TEXTURE_ID id = NONE, int start = 0, int stop = 0, SDL_Rect* dstRect = NULL, SDL_Rect* viewPort = NULL, double angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);

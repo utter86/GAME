@@ -1,11 +1,13 @@
 #include "textureeditor.h"
 
-RET_NUMS TextureEditor::init()
+RET_NUMS TextureEditor::init(Window* window)
 {
+  _window = window;
+  _inFileRect = {10,10,500,500};
   setScene();
   return RET_SUCCESS;
 }
-RET_NUMS TextureEditor::render(Window* window)
+RET_NUMS TextureEditor::render()
 {
   int x, y;
   SDL_GetMouseState(&x, &y);
@@ -13,15 +15,17 @@ RET_NUMS TextureEditor::render(Window* window)
   SDL_Color color = {255, 0, 0, 255};
   SDL_Rect tmpRect = {x - 25, y-25, 50, 50};
 
-  window->render(BACK, 0,0, nullptr, nullptr);
-  window->drawBorder(window->getRect(), &color);
+  _window->render(BACK, 0,0, nullptr, nullptr);
+  _window->drawBorder(_window->getRect(), &color);
 
-  window->render(TEST, 1, 4, &tmpRect, NULL);
-  window->drawBorder(&tmpRect, &color);
+  _window->render(TEST, 1, 4, &tmpRect, NULL);
+  _window->drawBorder(&tmpRect, &color);
 
-  _menu.render(window);
 
-  window->render();
+  _window->render(IN_FILE, 0, 0, &_inFileRect, NULL);
+  _menu.render(_window);
+
+  _window->render();
 
   return RET_SUCCESS;
 }
@@ -50,9 +54,18 @@ RET_NUMS TextureEditor::click(int button)
   switch(button)
   {
     case SDL_BUTTON_LEFT:
-      if(_menu.mouseMove() == CLOSE)
+      switch(_menu.mouseMove())
       {
-        exit(2);
+        case CLOSE:
+          exit(99);
+        break;
+        case LOAD_IMAGE:
+          _window->loadPNG(IN_FILE, "./data/in/in.png");
+          SDL_Rect tmpRect = *_window->getRect();
+          _inFileRect = *_window->getRect(IN_FILE, 0);
+          _inFileRect.x = tmpRect.w / 2 - _inFileRect.w / 2;
+          _inFileRect.y = tmpRect.h / 2 - _inFileRect.h / 2;
+        break;
       }
     break;
     case SDL_BUTTON_RIGHT:
@@ -84,7 +97,7 @@ RET_NUMS TextureEditor::setScene()
   color = {0,0,0,255};
   _menu.setBGColor(&color);
   _menu.makeMenu();
-  _menu.setPos( 50, 50);
+  _menu.setPos( 0, 0);
   _menu.active = true;
   return retNum;
 }
