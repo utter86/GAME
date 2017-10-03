@@ -24,6 +24,7 @@ RET_NUMS TextureEditor::render()
 
   _window->render(IN_FILE, 0, 0, &_inFileRect, NULL);
   _menu.render(_window);
+  _rectListMenu.render(_window);
 
   _window->render();
 
@@ -65,6 +66,7 @@ RET_NUMS TextureEditor::click(int button)
           _inFileRect = *_window->getRect(IN_FILE, 0);
           _inFileRect.x = tmpRect.w / 2 - _inFileRect.w / 2;
           _inFileRect.y = tmpRect.h / 2 - _inFileRect.h / 2;
+          getInFileRects();
         break;
       }
     break;
@@ -99,7 +101,47 @@ RET_NUMS TextureEditor::setScene()
   _menu.makeMenu();
   _menu.setPos( 0, 0);
   _menu.active = true;
+
   return retNum;
+}
+
+void TextureEditor::getInFileRects()
+{
+  bool isDone = false;
+  int counter = 0;
+  SDL_Rect* tmpRect = new SDL_Rect;
+  _rectListMenu.close();
+  _rectListMenu.init(RECT_LIST);
+  _rectListMenu.active = true;
+  while(!isDone)
+  {
+    tmpRect = _window->getRect(IN_FILE, counter);
+    if(tmpRect->x >-1)
+    {
+      std::cout << "HEJ\n";
+      Button* buttonPtr = new Button;
+
+      std::string tmpString = "Rect: ";
+      tmpString.append(std::to_string(counter));
+      tmpString.append("X: ");
+      tmpString.append(std::to_string(tmpRect->x));
+      tmpString.append("Y: ");
+      tmpString.append(std::to_string(tmpRect->y));
+      tmpString.append("W: ");
+      tmpString.append(std::to_string(tmpRect->w));
+      tmpString.append("H: ");
+      tmpString.append(std::to_string(tmpRect->h));
+      buttonPtr->init(counter);
+      buttonPtr->setText(tmpString,-1,-1, LARGE);
+    }
+    else
+    {
+      isDone = true;
+    }
+    counter ++;
+  }
+  //delete tmpRect;
+  //tmpRect = NULL;
 }
 
 void TextureEditor::saveFile()

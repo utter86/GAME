@@ -18,6 +18,8 @@ public:
 
   RET_NUMS setScene();
 
+  void getInFileRects();
+
   void saveFile();
   void loadFile();
 
@@ -26,7 +28,7 @@ private:
   Window* _window;
   SDL_Rect _inFileRect;
 
-  Menu _rectMenu;
+  Menu _rectListMenu;
   Menu _menu;
   Error _error;
 
@@ -37,7 +39,7 @@ private:
   };
   enum MENUS
   {
-    MENU = 1,
+    MENU = 1, RECT_LIST, 
   };
 };
 
