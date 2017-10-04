@@ -11,7 +11,7 @@ class TextureFolder
 {
 public:
   RET_NUMS addTexture(TEXTURE_ID id, SDL_Texture* texture);
-  RET_NUMS addRect(TEXTURE_ID id, int rectNum, SDL_Rect rect);
+  RET_NUMS addRect(TEXTURE_ID id, int rectNum, SDL_Rect* rect);
 
 
   //Getters

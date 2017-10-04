@@ -110,7 +110,8 @@ void Window::loadFileOld(TEXTURE_ID id, std::string file)
       pos2 = line.find(";");
       valStr = line.substr(pos1 + 1, pos2 - pos1 -1);
       rectH = atoi(valStr.c_str());
-      SDL_Rect tmpRect = {rectX, rectY, rectW, rectH};
+      SDL_Rect* tmpRect = new SDL_Rect;
+      *tmpRect = {rectX, rectY, rectW, rectH};
       _textureFolder.addRect(id, rectNum, tmpRect);
     }
   }
@@ -145,10 +146,14 @@ void Window::loadPNG(TEXTURE_ID id, std::string file)
       SDL_SetTextureBlendMode(tmpTexture, SDL_BLENDMODE_BLEND);
     }
   }
-  SDL_Rect tmpRect;
-  SDL_GetClipRect(tmpSurface, &tmpRect);
+  SDL_Rect* tmpRect = new SDL_Rect;
+  SDL_GetClipRect(tmpSurface, tmpRect);
   _textureFolder.addTexture(id, tmpTexture);
   _textureFolder.addRect(id, 0, tmpRect);
+}
+void Window::addTextureRect(TEXTURE_ID id, int rectNum, SDL_Rect* rect)
+{
+  _textureFolder.addRect(id, rectNum, rect);
 }
 SDL_Texture* Window::createTexture(std::string file)
 {

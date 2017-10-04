@@ -8,14 +8,14 @@
 struct Rect
 {
   int id;
-  SDL_Rect rect;
+  SDL_Rect* rect;
 };
 class Texture
 {
 public:
   //Setters
   RET_NUMS setSDLTexture(TEXTURE_ID id, SDL_Texture* texture);
-  RET_NUMS addRect(SDL_Rect rect, int rectNum);
+  RET_NUMS addRect(SDL_Rect* rect, int rectNum);
 
   //Getters
   SDL_Texture* getSDLTexture();

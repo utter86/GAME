@@ -12,7 +12,7 @@ RET_NUMS TextureFolder::addTexture(TEXTURE_ID id, SDL_Texture* texture)
   _textureVector.push_back(tmpTexture);
   return RET_SUCCESS;
 }
-RET_NUMS TextureFolder::addRect(TEXTURE_ID id, int rectNum, SDL_Rect rect)
+RET_NUMS TextureFolder::addRect(TEXTURE_ID id, int rectNum, SDL_Rect* rect)
 {
   Texture* tmpTexture = getTexture(id);
   if(tmpTexture != NULL)

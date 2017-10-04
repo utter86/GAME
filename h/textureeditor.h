@@ -20,17 +20,22 @@ public:
 
   void getInFileRects();
 
+  void addRect();
+
   void saveFile();
   void loadFile();
 
 private:
   //Window
   Window* _window;
-  SDL_Rect _inFileRect;
-  SDL_Rect* _activeRect;
-  std::vector<SDL_Rect*> _inFileRects;
+
+  SDL_Rect* _inFileRect = NULL;
+  SDL_Rect* _activeRect = NULL;
+
+  int _rectNum;
   Menu _rectListMenu;
   Menu _menu;
+
   Error _error;
 
 
