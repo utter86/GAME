@@ -4,7 +4,6 @@ RET_NUMS Menu::init(int id)
 {
   _id = id;
   _border = false;
-  *_menuRect = {0, 0, 0, 0};
   active = false;
   _borderColor = {0,0,0,0};
   _bgColor = {0,0,0,0};
@@ -33,7 +32,7 @@ RET_NUMS Menu::render(Window* window)
 {
   if(active)
   {
-    window->fillRect(_menuRect, &_bgColor);
+    //window->fillRect(_menuRect, &_bgColor);
     for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
     {
       (*it)->render(window);
@@ -91,9 +90,17 @@ RET_NUMS Menu::makeMenu(bool xAxis)
   return RET_SUCCESS;
 }
 
+void Menu::clearMenu()
+{
+  for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
+  {
+    (*it)->close();
+    delete &(*it);
+  }
+}
 void Menu::close()
 {
-  free(_menuRect);
+  delete(_menuRect);
   for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
   {
     (*it)->close();
@@ -112,6 +119,10 @@ Button* Menu::getButton(int id)
     }
   }
   return NULL;
+}
+SDL_Rect* Menu::getRect()
+{
+  return _menuRect;
 }
 //setters
 RET_NUMS Menu::setPos(int x, int y)

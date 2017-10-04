@@ -9,7 +9,8 @@ RET_NUMS Texture::setSDLTexture(TEXTURE_ID id, SDL_Texture* texture)
 }
 RET_NUMS Texture::addRect(SDL_Rect rect, int rectNum)
 {
-  _srcRect[rectNum] = rect;
+  Rect tmpRect = {rectNum, rect};
+  _rectVect.push_back(tmpRect);
   return RET_SUCCESS;
 }
 
@@ -20,7 +21,14 @@ SDL_Texture* Texture::getSDLTexture()
 }
 SDL_Rect* Texture::getRect(int rectNum)
 {
-  return &_srcRect[rectNum];
+  for(std::vector<Rect>::iterator it = _rectVect.begin(); it != _rectVect.end(); it++)
+  {
+    if(rectNum == it->id)
+    {
+      return &it->rect;
+    }
+  }
+  return NULL;
 }
 int Texture::getID()
 {

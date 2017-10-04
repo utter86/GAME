@@ -2,9 +2,14 @@
 #define TEXTURE_H
 
 #include <SDL2/SDL.h>
-
+#include <vector>
 #include "enums.h"
 
+struct Rect
+{
+  int id;
+  SDL_Rect rect;
+};
 class Texture
 {
 public:
@@ -20,7 +25,7 @@ public:
 private:
   TEXTURE_ID _id;
   SDL_Texture* _texture;
-  SDL_Rect _srcRect[99];
+  std::vector<Rect> _rectVect;
 
 };
 

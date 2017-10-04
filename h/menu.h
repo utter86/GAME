@@ -16,10 +16,12 @@ public:
   RET_NUMS addButton(Button* button);
   RET_NUMS makeMenu(bool xAxis = false);
 
+  void clearMenu();
   void close();
 
   //Getters
   Button* getButton(int id);
+  SDL_Rect* getRect();
 
   //Setters
   RET_NUMS setPos(int x, int y);

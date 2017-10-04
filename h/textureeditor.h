@@ -27,7 +27,8 @@ private:
   //Window
   Window* _window;
   SDL_Rect _inFileRect;
-
+  SDL_Rect* _activeRect;
+  std::vector<SDL_Rect*> _inFileRects;
   Menu _rectListMenu;
   Menu _menu;
   Error _error;
@@ -39,7 +40,7 @@ private:
   };
   enum MENUS
   {
-    MENU = 1, RECT_LIST, 
+    MENU = 1, RECT_LIST,
   };
 };
 
