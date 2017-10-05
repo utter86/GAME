@@ -61,6 +61,10 @@ RET_NUMS TextureEditor::keyUp(int key)
   {
     case SDLK_F1:
       addRect();
+      getInFileRects();
+    break;
+    case SDLK_F2:
+
     break;
     case SDLK_w:
       if(_activeRect != NULL)
@@ -135,51 +139,34 @@ RET_NUMS TextureEditor::setScene()
 
 void TextureEditor::getInFileRects()
 {
-  bool isDone = false;
   int counter = 0;
-  SDL_Rect* tmpRect = new SDL_Rect;
-  _rectListMenu.clearMenu();
-  _rectListMenu.init(RECT_LIST);
-  _rectListMenu.active = true;
-  while(!isDone)
+  SDL_Rect* tmpRect = _window->getRect(IN_FILE, counter);
+  while(tmpRect != NULL)
   {
+    Button* buttonPtr =  new Button;
+    buttonPtr->init(counter);
+    std::string tmpString = "Rect: ";
+    tmpString.append(std::to_string(counter));
+    tmpString.append(", X: ");
+    tmpString.append(std::to_string(tmpRect->x));
+    tmpString.append(", Y: ");
+    tmpString.append(std::to_string(tmpRect->y));
+    tmpString.append(", W: ");
+    tmpString.append(std::to_string(tmpRect->w));
+    tmpString.append(", H: ");
+    tmpString.append(std::to_string(tmpRect->h));
+    buttonPtr->setText(tmpString, -1, -1, XSMALL);
+    _rectListMenu.addButton(buttonPtr);
+    _error.printRect(tmpRect);
+    counter++;
     tmpRect = _window->getRect(IN_FILE, counter);
-    if(tmpRect != NULL)
-    {
-      Button* buttonPtr = new Button;
-      /*
-      std::string tmpString = "Rect: ";
-      tmpString.append(std::to_string(counter));
-      tmpString.append(", X: ");
-      tmpString.append(std::to_string(tmpRect->x));
-      tmpString.append(", Y: ");
-      tmpString.append(std::to_string(tmpRect->y));
-      tmpString.append(", W: ");
-      tmpString.append(std::to_string(tmpRect->w));
-      tmpString.append(", H: ");
-      tmpString.append(std::to_string(tmpRect->h));
-      */
-      buttonPtr->init(counter);
-      buttonPtr->setText("HEJ", -1, -1, SMALL);
-      std::cout << "ADD BUTTON TO MENU!\n";
-      _rectListMenu.addButton(buttonPtr);
-    }
-    else
-    {
-      isDone = true;
-    }
-    counter ++;
   }
+  _rectListMenu.makeMenu();
   tmpRect = _window->getRect();
   int wW = tmpRect->w;
-  _rectListMenu.makeMenu();
   tmpRect = _rectListMenu.getRect();
-  _rectListMenu.setPos(wW - tmpRect->w - 5, 0);
+  _rectListMenu.setPos(wW - tmpRect->w - 5,0);
   _rectListMenu.active = true;
-
-  tmpRect = NULL;
-  delete tmpRect;
-  std::cout << '\n';
 }
 
 void TextureEditor::addRect()
@@ -187,16 +174,16 @@ void TextureEditor::addRect()
   if(_inFileRect != NULL)
   {
     SDL_Rect* tmpRect = new SDL_Rect;
-    *tmpRect = {50,50,500,500};
+    *tmpRect = {0,0,50,50};
     _window->addTextureRect(IN_FILE, _rectNum, tmpRect);
     _activeRect = tmpRect;
     _rectNum++;
-    getInFileRects();
   }
   else
   {
     std::cout << "NOPE\n";
   }
+
 }
 
 void TextureEditor::saveFile()

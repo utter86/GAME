@@ -50,11 +50,8 @@ RET_NUMS Menu::addButton(Button* button)
   {
     if(getButton(button->getID()) == NULL)
     {
-      std::cout << "BUTTON UNIQUE!\n";
       button->setViewport(_menuRect);
-      std::cout << "VIEW PORT SET!\n";
       _buttonVector.push_back(button);
-      std::cout << "BUTTON ADDED TO VECTOR!\n";
       retNum = RET_SUCCESS;
     }
   }
