@@ -95,7 +95,7 @@ void Menu::clearMenu()
   for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
   {
     (*it)->close();
-    delete &(*it);
+    delete (*it);
   }
   _buttonVector.clear();
 }

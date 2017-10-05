@@ -18,8 +18,8 @@ public:
 
   RET_NUMS setScene();
 
+  void moveRect(int key);
   void getInFileRects();
-
   void addRect();
 
   void saveFile();
@@ -36,10 +36,11 @@ private:
   Menu _rectListMenu;
   Menu _menu;
 
+  int _moveSize;
+  bool _moveFlag;
+
   Error _error;
-
-
-  enum BUTTONS
+    enum BUTTONS
   {
     LOAD_IMAGE = 100, CLOSE,
   };

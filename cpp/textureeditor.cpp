@@ -4,6 +4,8 @@ RET_NUMS TextureEditor::init(Window* window)
 {
   _window = window;
   _rectNum = 1;
+  _moveSize = 1;
+  _moveFlag = true;
   setScene();
   return RET_SUCCESS;
 }
@@ -23,6 +25,8 @@ RET_NUMS TextureEditor::render()
 
   bool isDone = false;
   int counter = 0;
+
+  //Draw all rects in texture red;
   while(!isDone)
   {
     SDL_Rect* tmpRect = _window->getRect(IN_FILE, counter);
@@ -41,8 +45,29 @@ RET_NUMS TextureEditor::render()
     }
   }
 
-  _window->render();
+  //Draw active rect green
+  SDL_Color activeColor = {0, 255, 0, 255};
+  if(_activeRect != NULL)
+  {
+    SDL_Rect tmpRect = *_activeRect;
+    tmpRect.x += _inFileRect->x;
+    tmpRect.y += _inFileRect->y;
+    _window->drawBorder(&tmpRect, &activeColor);
+  }
+  //Render lables
+  std::string tmpString = "Size:";
+  tmpString.append(std::to_string(_moveSize));
+  _window->renderText(tmpString,0, 100, SMALL);
 
+  if(_moveFlag)
+  {
+    _window->renderText("Moving Rect!", 0, 115, SMALL);
+  }
+  else
+  {
+    _window->renderText("Resize Rect!", 0, 115, SMALL);
+  }
+  _window->render();
   return RET_SUCCESS;
 }
 
@@ -60,17 +85,17 @@ RET_NUMS TextureEditor::keyUp(int key)
   switch(key)
   {
     case SDLK_F1:
+      _moveFlag = true;
+    break;
+    case SDLK_F2:
+      _moveFlag = false;
+    break;
+    case SDLK_F5:
       addRect();
       getInFileRects();
     break;
-    case SDLK_F2:
-
-    break;
-    case SDLK_w:
-      if(_activeRect != NULL)
-      {
-        _activeRect->y -=10;
-      }
+    default:
+      moveRect(key);
     break;
   }
   return RET_SUCCESS;
@@ -137,9 +162,103 @@ RET_NUMS TextureEditor::setScene()
   return retNum;
 }
 
+void TextureEditor::moveRect(int key)
+{
+  if(_activeRect != NULL)
+  {
+    switch(key)
+    {
+    case SDLK_w:
+      if(_moveFlag)
+      {
+        _activeRect->y -=_moveSize;
+        if(_activeRect->y < 0)
+        {
+          _activeRect->y = 0;
+        }
+      }
+      else
+      {
+        _activeRect->h -= _moveSize;
+        if(_activeRect->h < 1)
+        {
+          _activeRect->h = 1;
+        }
+      }
+    break;
+    case SDLK_s:
+      if(_moveFlag)
+      {
+        _activeRect->y +=_moveSize;
+        if(_activeRect->y + _activeRect->h> _inFileRect->h)
+        {
+          _activeRect->y = _inFileRect->h - _activeRect->h;
+        }
+      }
+      else
+      {
+        _activeRect->h += _moveSize;
+        if(_activeRect->h + _activeRect->y > _inFileRect->h)
+        {
+          _activeRect->h = _inFileRect->h - _activeRect->y;
+        }
+      }
+    break;
+    case SDLK_a:
+      if(_moveFlag)
+      {
+        _activeRect->x -=_moveSize;
+        if(_activeRect->x < 0)
+        {
+          _activeRect->x = 0;
+        }
+      }
+      else
+      {
+        _activeRect->w -= _moveSize;
+        if(_activeRect->w < 1)
+        {
+          _activeRect->w = 1;
+        }
+      }
+    break;
+    case SDLK_d:
+      if(_moveFlag)
+      {
+        _activeRect->x +=_moveSize;
+        if(_activeRect->x + _activeRect->w > _inFileRect->w)
+        {
+          _activeRect->w = _inFileRect->w - _activeRect->x;
+        }
+      }
+      else
+      {
+        _activeRect->w +=_moveSize;
+        if(_activeRect->w + _activeRect->w > _inFileRect->w)
+        {
+          _activeRect->w = _inFileRect->w - _activeRect->x;
+        }
+      }
+    break;
+    case SDLK_KP_PLUS:
+      _moveSize++;
+    break;
+    case SDLK_KP_MINUS:
+      _moveSize--;
+      if(_moveSize < 1)
+      {
+        _moveSize = 1;
+      }
+    break;
+    }
+  }
+  getInFileRects();
+}
 void TextureEditor::getInFileRects()
 {
   int counter = 0;
+  _rectListMenu.clearMenu();
+  _rectListMenu.init(RECT_LIST);
   SDL_Rect* tmpRect = _window->getRect(IN_FILE, counter);
   while(tmpRect != NULL)
   {
@@ -157,7 +276,6 @@ void TextureEditor::getInFileRects()
     tmpString.append(std::to_string(tmpRect->h));
     buttonPtr->setText(tmpString, -1, -1, XSMALL);
     _rectListMenu.addButton(buttonPtr);
-    _error.printRect(tmpRect);
     counter++;
     tmpRect = _window->getRect(IN_FILE, counter);
   }
@@ -168,7 +286,6 @@ void TextureEditor::getInFileRects()
   _rectListMenu.setPos(wW - tmpRect->w - 5,0);
   _rectListMenu.active = true;
 }
-
 void TextureEditor::addRect()
 {
   if(_inFileRect != NULL)
