@@ -21,6 +21,7 @@ public:
   void moveRect(int key);
   void getInFileRects();
   void addRect();
+  void makeGrid();
 
   void saveFile();
   void loadFile();

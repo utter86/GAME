@@ -117,6 +117,53 @@ void Window::loadFileOld(TEXTURE_ID id, std::string file)
   }
   textureFile.close();
 }
+void Window::loadFile(std::string file)
+{
+  //Load id
+  std::string fileString = "./data/out/";
+  fileString.append(file);
+
+  SDL_RWops* texture = SDL_RWFromFile(fileString.c_str(), "rb");
+  int fileSize = SDL_RWsize(texture);
+  int* id = (int*)malloc(sizeof(int));
+  SDL_RWread(texture, id, fileSize, 1);
+  SDL_RWclose(texture);
+
+  //Load texture
+  fileString = "./data/out/";
+  fileString.append(file);
+  fileString.append(".texture");
+
+  texture = SDL_RWFromFile(fileString.c_str(), "rb");
+  fileSize = SDL_RWsize(texture);
+  SDL_Texture* tmpTexture = (SDL_Texture*)malloc(fileSize);
+  SDL_RWread(texture, tmpTexture, fileSize, 1);
+  SDL_RWclose(texture);
+  //Add texture
+  _textureFolder.addTexture(TEXTURE_ID(*id), tmpTexture);
+
+  //Load rects
+  fileString = "./data/out/";
+  fileString.append(file);
+  fileString.append(".rect");
+
+  texture = SDL_RWFromFile(fileString.c_str(), "rb");
+  fileSize = SDL_RWsize(texture);
+  int rectSize = sizeof(SDL_Rect);
+  int current = 1;
+  int loaded = 0;
+  int counter = 0;
+  SDL_Rect* rectPtr = (SDL_Rect*)malloc(fileSize);
+  while(loaded < fileSize && current != 0)
+  {
+    current = SDL_RWread(texture, rectPtr, rectSize, 1);
+    _textureFolder.addRect(TEXTURE_ID(*id), counter, rectPtr);
+    rectPtr += current;
+    loaded += rectSize;
+    counter++;
+  }
+  SDL_RWclose(texture);
+}
 void Window::loadPNG(TEXTURE_ID id, std::string file)
 {
   //Add Texture

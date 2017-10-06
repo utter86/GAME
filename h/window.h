@@ -25,6 +25,7 @@ public:
 
   RET_NUMS loadMedia();
   void loadFileOld(TEXTURE_ID id, std::string file);
+  void loadFile(std::string file);
   void loadPNG(TEXTURE_ID id, std::string file);
   void addTextureRect(TEXTURE_ID id, int rectNum, SDL_Rect* rect);
   SDL_Texture* createTexture(std::string file);

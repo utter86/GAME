@@ -94,6 +94,15 @@ RET_NUMS TextureEditor::keyUp(int key)
       addRect();
       getInFileRects();
     break;
+    case SDLK_F4:
+      makeGrid();
+    break;
+    case SDLK_F8:
+      saveFile();
+    break;
+    case SDLK_F7:
+      loadFile();
+    break;
     default:
       moveRect(key);
     break;
@@ -302,41 +311,91 @@ void TextureEditor::addRect()
   }
 
 }
+void TextureEditor::makeGrid()
+{
+  int rows = 0;
+  int lines = 0;
+  int tmpW = 0;
+  int tmpH = 0;
+  int tmpX = 0;
+  int tmpY = 0;
+  int counter = 1;
+  std::cout << "Rows: ";
+  std::cin >> rows;
+  std::cout << "Lines: ";
+  std::cin >> lines;
+  tmpW = _inFileRect->w / rows;
+  tmpH = _inFileRect->h / lines;
+  for(int y; y < lines; y++)
+  {
+    for(int x; x < rows; x++)
+    {
+      SDL_Rect* tmpRect = new SDL_Rect;
+      *tmpRect = {tmpX, tmpY, tmpW, tmpH};
+      _window->addTextureRect(IN_FILE, counter, tmpRect);
+      tmpX += tmpW;
+      counter++;
+    }
+    tmpY += tmpH;
+  }
+  getInFileRects();
+}
 
 void TextureEditor::saveFile()
 {
-  SDL_Rect tmpRect = {0, 0, 184, 184};
-  SDL_RWops* file = SDL_RWFromFile("./data/texture/test", "wb");
-  int rectSize = sizeof(tmpRect);
+  SDL_RWops* file = SDL_RWFromFile("./data/out/out.rect", "wb");
+  int rectSize = sizeof(SDL_Rect);
+  int counter = 0;
   if(file != NULL)
   {
-    SDL_RWwrite(file, &tmpRect, rectSize, 1);
-    tmpRect = {0, 0, 92, 92};
-    SDL_RWwrite(file, &tmpRect, rectSize, 1);
-    tmpRect = {92, 0, 92, 92};
-    SDL_RWwrite(file, &tmpRect, rectSize, 1);
-    tmpRect = {0, 92, 92, 92};
-    SDL_RWwrite(file, &tmpRect, rectSize, 1);
-    tmpRect = {92, 92, 92, 92};
-    SDL_RWwrite(file, &tmpRect, rectSize, 1);
+    SDL_Rect* tmpRect = _window->getRect(IN_FILE, counter);
+    while(tmpRect != NULL)
+    {
+      SDL_RWwrite(file, tmpRect, rectSize, 1);
+      counter++;
+      tmpRect = _window->getRect(IN_FILE, counter);
+    }
+  }
+  SDL_RWclose(file);
+
+  file = SDL_RWFromFile("./data/out/out.texture", "wb");
+  SDL_Texture* tmpTexture = _window->getSDLTexture(IN_FILE);
+  int textSize = sizeof(tmpTexture);
+  if(file != NULL)
+  {
+    SDL_RWwrite(file, tmpTexture, textSize, 1);
+  }
+  SDL_RWclose(file);
+
+  file = SDL_RWFromFile("./data/out/out", "wb");
+  int idPtr = IN_FILE;
+  int intSize = sizeof(int);
+  if(file != NULL)
+  {
+    SDL_RWwrite(file, &idPtr, intSize, 1);
   }
   SDL_RWclose(file);
 }
 void TextureEditor::loadFile()
 {
-
-  SDL_RWops* file = SDL_RWFromFile("./data/texture/test", "rb");
-  int fileSize = SDL_RWsize(file);
+  SDL_RWops* rectFile = SDL_RWFromFile("./data/out/out.rect", "rb");
+  int fileSize = SDL_RWsize(rectFile);
   int rectSize = sizeof(SDL_Rect);
   int current = 1;
   int loaded = 0;
   SDL_Rect* rectPtr = (SDL_Rect*)malloc(fileSize);
   while(loaded < fileSize && current != 0)
   {
-    current = SDL_RWread(file, rectPtr, rectSize, 1);
+    current = SDL_RWread(rectFile, rectPtr, rectSize, 1);
     _error.printRect(rectPtr);
     rectPtr += current;
     loaded += rectSize;
   }
-  SDL_RWclose(file);
+  SDL_RWclose(rectFile);
+
+  SDL_RWops* textFile = SDL_RWFromFile("./data/out/out.text", "rb");
+  fileSize = SDL_RWsize(textFile);
+  SDL_Texture* tmpTexture = (SDL_Texture*)malloc(fileSize);
+  SDL_RWread(textFile, tmpTexture, fileSize, 1);
+  SDL_RWclose(textFile);
 }
