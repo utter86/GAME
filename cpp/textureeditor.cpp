@@ -4,8 +4,7 @@ RET_NUMS TextureEditor::init(Window* window)
 {
   _window = window;
   _rectNum = 1;
-  _moveSize = 1;
-  _moveFlag = true;
+  _text.init(500,200, SMALL);
   setScene();
   return RET_SUCCESS;
 }
@@ -55,20 +54,33 @@ RET_NUMS TextureEditor::render()
     _window->drawBorder(&tmpRect, &activeColor);
   }
   //Render lables
-  std::string tmpString = "Size:";
-  tmpString.append(std::to_string(_moveSize));
-  _window->renderText(tmpString,0, 100, SMALL);
-
-  if(_moveFlag)
-  {
-    _window->renderText("Moving Rect!", 0, 115, SMALL);
-  }
-  else
-  {
-    _window->renderText("Resize Rect!", 0, 115, SMALL);
-  }
+  SDL_Color* tmpColor = new SDL_Color;
+  *tmpColor = {255, 0, 0, 255};
+  _window->setColorMod(ALPHA, tmpColor);
+  delete tmpColor;
+  tmpColor = NULL;
+  _window->renderText("F1 Add Rect.", 0,50, SMALL);
+  _window->renderText("F2 Make grid.", 0, 80, SMALL);
+  _window->renderText("F3 Save file.", 0,65, SMALL);
   _window->render();
   return RET_SUCCESS;
+}
+RET_NUMS TextureEditor::doEvents(SDL_Event* event)
+{
+  switch(event->type)
+  {
+    case SDL_KEYUP:
+      keyUp(event->key.keysym.sym);
+    break;
+    case SDL_MOUSEBUTTONUP:
+      click(event->button.button);
+    break;
+    default:
+      mouseMove();
+    break;
+  }
+  _text.update(event);
+  return RET_FAILED;
 }
 
 RET_NUMS TextureEditor::mouseMove()
@@ -85,14 +97,14 @@ RET_NUMS TextureEditor::keyUp(int key)
   switch(key)
   {
     case SDLK_F1:
-      _moveFlag = true;
-    break;
-    case SDLK_F2:
-      _moveFlag = false;
-    break;
-    case SDLK_F5:
       addRect();
       getInFileRects();
+    break;
+    case SDLK_F2:
+      testFunk();
+    break;
+    case SDLK_F5:
+
     break;
     case SDLK_F4:
       makeGrid();
@@ -103,8 +115,8 @@ RET_NUMS TextureEditor::keyUp(int key)
     case SDLK_F7:
       loadFile();
     break;
-    default:
-      moveRect(key);
+    case SDLK_RETURN:
+
     break;
   }
   return RET_SUCCESS;
@@ -171,98 +183,6 @@ RET_NUMS TextureEditor::setScene()
   return retNum;
 }
 
-void TextureEditor::moveRect(int key)
-{
-  if(_activeRect != NULL)
-  {
-    switch(key)
-    {
-    case SDLK_w:
-      if(_moveFlag)
-      {
-        _activeRect->y -=_moveSize;
-        if(_activeRect->y < 0)
-        {
-          _activeRect->y = 0;
-        }
-      }
-      else
-      {
-        _activeRect->h -= _moveSize;
-        if(_activeRect->h < 1)
-        {
-          _activeRect->h = 1;
-        }
-      }
-    break;
-    case SDLK_s:
-      if(_moveFlag)
-      {
-        _activeRect->y +=_moveSize;
-        if(_activeRect->y + _activeRect->h> _inFileRect->h)
-        {
-          _activeRect->y = _inFileRect->h - _activeRect->h;
-        }
-      }
-      else
-      {
-        _activeRect->h += _moveSize;
-        if(_activeRect->h + _activeRect->y > _inFileRect->h)
-        {
-          _activeRect->h = _inFileRect->h - _activeRect->y;
-        }
-      }
-    break;
-    case SDLK_a:
-      if(_moveFlag)
-      {
-        _activeRect->x -=_moveSize;
-        if(_activeRect->x < 0)
-        {
-          _activeRect->x = 0;
-        }
-      }
-      else
-      {
-        _activeRect->w -= _moveSize;
-        if(_activeRect->w < 1)
-        {
-          _activeRect->w = 1;
-        }
-      }
-    break;
-    case SDLK_d:
-      if(_moveFlag)
-      {
-        _activeRect->x +=_moveSize;
-        if(_activeRect->x + _activeRect->w > _inFileRect->w)
-        {
-          _activeRect->w = _inFileRect->w - _activeRect->x;
-        }
-      }
-      else
-      {
-        _activeRect->w +=_moveSize;
-        if(_activeRect->w + _activeRect->w > _inFileRect->w)
-        {
-          _activeRect->w = _inFileRect->w - _activeRect->x;
-        }
-      }
-    break;
-    case SDLK_KP_PLUS:
-      _moveSize++;
-    break;
-    case SDLK_KP_MINUS:
-      _moveSize--;
-      if(_moveSize < 1)
-      {
-        _moveSize = 1;
-      }
-    break;
-    }
-  }
-  getInFileRects();
-}
 void TextureEditor::getInFileRects()
 {
   int counter = 0;
@@ -299,6 +219,7 @@ void TextureEditor::addRect()
 {
   if(_inFileRect != NULL)
   {
+
     SDL_Rect* tmpRect = new SDL_Rect;
     *tmpRect = {0,0,50,50};
     _window->addTextureRect(IN_FILE, _rectNum, tmpRect);
@@ -339,6 +260,10 @@ void TextureEditor::makeGrid()
     tmpY += tmpH;
   }
   getInFileRects();
+}
+void TextureEditor::testFunk()
+{
+  _text.start();
 }
 
 void TextureEditor::saveFile()

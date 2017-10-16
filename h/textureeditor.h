@@ -5,23 +5,24 @@
 #include "enums.h"
 #include "error.h"
 #include "menu.h"
+#include "textinput.h"
 
 class TextureEditor
 {
 public:
   RET_NUMS init(Window* window);
   RET_NUMS render();
-
+  RET_NUMS doEvents(SDL_Event* event);
   RET_NUMS mouseMove();
   RET_NUMS keyUp(int key);
   RET_NUMS click(int button);
 
   RET_NUMS setScene();
 
-  void moveRect(int key);
   void getInFileRects();
   void addRect();
   void makeGrid();
+  void testFunk();
 
   void saveFile();
   void loadFile();
@@ -37,11 +38,9 @@ private:
   Menu _rectListMenu;
   Menu _menu;
 
-  int _moveSize;
-  bool _moveFlag;
-
+  TextInput _text;
   Error _error;
-    enum BUTTONS
+  enum BUTTONS
   {
     LOAD_IMAGE = 100, CLOSE,
   };

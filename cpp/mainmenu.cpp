@@ -19,8 +19,6 @@ RET_NUMS MainMenu::render(Window* window)
   window->render(TEST, 1, 4, &tmpRect, NULL);
   window->drawBorder(&tmpRect, &color);
 
-  window->renderText("HEJ!", 10, 10, XSMALL);
-
   window->render();
 
   return RET_SUCCESS;
