@@ -3,7 +3,9 @@
 //Public
 RET_NUMS SceneHandler::init(Window* window)
 {
+  SDL_Rect tmpRect = *window->getRect();
   _window = window;
+  _console.init(0, 0, tmpRect.w, tmpRect.h / 2);
   initScene(TEXTURE_EDITOR);
   return RET_SUCCESS;
 }
@@ -21,7 +23,7 @@ RET_NUMS SceneHandler::initScene(SCENE scene)
   switch(_activeScene)
   {
     case MAIN_MENU:
-      _mainMenu.init();
+      //_mainMenu.init();
     break;
     case TEXTURE_EDITOR:
       _textureEditor.init(_window);
@@ -34,18 +36,41 @@ RET_NUMS SceneHandler::doEvents()
   RET_NUMS retNum = RET_SUCCESS;
   while(SDL_PollEvent(&_events))
   {
+    //Global keys for forced quit and console!
     if(_events.type == SDL_KEYUP && _events.key.keysym.sym == SDLK_F12)
     {
       exit(99);
     }
-    switch(_activeScene)
+    else if(_events.type == SDL_KEYUP && _events.key.keysym.sym == SDLK_TAB)
     {
-      case TEXTURE_EDITOR:
-        _textureEditor.doEvents(&_events);
-      break;
-      default:
-        std::cout << "BLÄ\n";
-      break;
+      if(_console.active)
+      {
+        std::cout << "CONOSOLE OFF!\n";
+        _console.active = false;
+      }
+      else
+      {
+          std::cout << "CONOSOLE ON!\n";
+        _console.active = true;
+      }
+    }
+    //if console is active
+    if(_console.active)
+    {
+      _console.doEvents(&_events);
+    }
+    else
+    {
+      //Scene updates
+      switch(_activeScene)
+      {
+        case TEXTURE_EDITOR:
+          retNum = _textureEditor.doEvents(&_events);
+        break;
+        default:
+          std::cout << "BLÄ\n";
+        break;
+      }
     }
   }
   return retNum;
@@ -56,10 +81,16 @@ void SceneHandler::render(Window* window)
   switch(_activeScene)
   {
     case MAIN_MENU:
-      _mainMenu.render(window);
+      //_mainMenu.render(window);
     break;
     case TEXTURE_EDITOR:
       _textureEditor.render();
     break;
   }
+
+  if(_console.active)
+  {
+    _console.render(window);
+  }
+  _window->render();
 }

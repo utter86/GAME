@@ -4,7 +4,7 @@ RET_NUMS TextureEditor::init(Window* window)
 {
   _window = window;
   _rectNum = 1;
-  _text.init(500,200, SMALL);
+  _text.init();
   setScene();
   return RET_SUCCESS;
 }
@@ -62,7 +62,6 @@ RET_NUMS TextureEditor::render()
   _window->renderText("F1 Add Rect.", 0,50, SMALL);
   _window->renderText("F2 Make grid.", 0, 80, SMALL);
   _window->renderText("F3 Save file.", 0,65, SMALL);
-  _window->render();
   return RET_SUCCESS;
 }
 RET_NUMS TextureEditor::doEvents(SDL_Event* event)
@@ -70,17 +69,28 @@ RET_NUMS TextureEditor::doEvents(SDL_Event* event)
   switch(event->type)
   {
     case SDL_KEYUP:
-      keyUp(event->key.keysym.sym);
+      return keyUp(event->key.keysym.sym);
     break;
     case SDL_MOUSEBUTTONUP:
-      click(event->button.button);
+      return click(event->button.button);
     break;
     default:
       mouseMove();
     break;
   }
-  _text.update(event);
-  return RET_FAILED;
+  switch(_text.update(event))
+  {
+    case RET_SUCCESS:
+
+    break;
+    case RET_FULL:
+
+    break;
+    default:
+
+    break;
+  }
+  return RET_SUCCESS;
 }
 
 RET_NUMS TextureEditor::mouseMove()
@@ -94,6 +104,7 @@ RET_NUMS TextureEditor::mouseMove()
 }
 RET_NUMS TextureEditor::keyUp(int key)
 {
+    RET_NUMS retNum = RET_SUCCESS;
   switch(key)
   {
     case SDLK_F1:
@@ -101,7 +112,7 @@ RET_NUMS TextureEditor::keyUp(int key)
       getInFileRects();
     break;
     case SDLK_F2:
-      testFunk();
+      _text.start();
     break;
     case SDLK_F5:
 
@@ -116,10 +127,10 @@ RET_NUMS TextureEditor::keyUp(int key)
       loadFile();
     break;
     case SDLK_RETURN:
-
+      _text.stop();
     break;
   }
-  return RET_SUCCESS;
+  return retNum;
 }
 RET_NUMS TextureEditor::click(int button)
 {
@@ -154,22 +165,27 @@ RET_NUMS TextureEditor::click(int button)
 RET_NUMS TextureEditor::setScene()
 {
   RET_NUMS retNum = RET_FAILED;
+
   SDL_Color color = {255,0,0,255};
   SDL_Color bgColor = {0,0,0,255};
+
+  //Menu menu
   _menu.init(MENU);
+  //Load image button
   Button* buttonPtr = new Button;
   buttonPtr->init(LOAD_IMAGE);
   buttonPtr->setText("LOAD IMAGE", 0, 0, XSMALL);
   buttonPtr->setBorder(&color);
   buttonPtr->setBGColor(&bgColor);
-
-  Button* buttonPtr1 = new Button;
-  buttonPtr1->init(CLOSE);
-  buttonPtr1->setText("CLOSE", -1, -1, XLARGE);
-  buttonPtr1->setBorder(&color);
-
   _menu.addButton(buttonPtr);
-  _menu.addButton(buttonPtr1);
+  //Close button
+  buttonPtr = NULL;
+  buttonPtr = new Button;
+  buttonPtr->init(CLOSE);
+  buttonPtr->setText("CLOSE", -1, -1, XLARGE);
+  buttonPtr->setBorder(&color);
+  _menu.addButton(buttonPtr);
+  //Set menu!
   _menu.setBorder(&color);
   color = {0,0,0,255};
   _menu.setBGColor(&color);
@@ -177,9 +193,9 @@ RET_NUMS TextureEditor::setScene()
   _menu.setPos( 0, 0);
   _menu.active = true;
 
+  //Rect List menu
   _rectListMenu.init(RECT_LIST);
   _rectListMenu.active = false;
-
   return retNum;
 }
 
@@ -260,10 +276,6 @@ void TextureEditor::makeGrid()
     tmpY += tmpH;
   }
   getInFileRects();
-}
-void TextureEditor::testFunk()
-{
-  _text.start();
 }
 
 void TextureEditor::saveFile()

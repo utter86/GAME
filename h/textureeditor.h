@@ -22,7 +22,6 @@ public:
   void getInFileRects();
   void addRect();
   void makeGrid();
-  void testFunk();
 
   void saveFile();
   void loadFile();
@@ -39,6 +38,7 @@ private:
   Menu _menu;
 
   TextInput _text;
+
   Error _error;
   enum BUTTONS
   {

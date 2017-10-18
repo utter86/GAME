@@ -7,6 +7,7 @@
 #include "window.h"
 #include "mainmenu.h"
 #include "textureeditor.h"
+#include "console.h"
 
 class SceneHandler
 {
@@ -23,6 +24,7 @@ private:
   Window* _window;
 
   SCENE _activeScene;
+  Console _console;
 
   MainMenu _mainMenu;
   TextureEditor _textureEditor;

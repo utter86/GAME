@@ -110,6 +110,10 @@ void GameObject::setText(std::string text, int x, int y, int size, SDL_Color* co
   _textX = x;
   _textY = y;
   _textSize = size;
+  if(color != NULL)
+  {
+    _textColor = *color;
+  }
   if(_textId  == NONE)
   {
     fitRect();

@@ -11,23 +11,16 @@
 class TextInput
 {
 public:
-  void init(int x, int y, int txtSize, SDL_Color* txtColor = NULL, SDL_Color* backColor = NULL, SDL_Color* areaColor = NULL);
-  void update(SDL_Event* event);
+  void init();
+  RET_NUMS update(SDL_Event* event);
   void start();
   void stop();
 
-  //Setters
-  void setTextColor(SDL_Color* color);
-  void setBackColor(SDL_Color* color);
-  void setAreaColor(SDL_Color* color);
-  void setPos(int x, int y);
-
+  //Getters
+  std::string getText();
 private:
   bool _active;
-  int _X, _Y, _txtSize;
-  SDL_Color* _txtColor = NULL;
-  SDL_Color* _backColor = NULL;
-  SDL_Color* _areaColor = NULL;
+  int _txtSize;
   char* _text;
 
   SDL_Event _events;
