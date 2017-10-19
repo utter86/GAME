@@ -1,6 +1,7 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
+#include <algorithm>
 #include "window.h"
 #include "textinput.h"
 #include "errno.h"
@@ -12,8 +13,7 @@ public:
   void init(int x, int y, int w, int h);
   RET_NUMS doEvents(SDL_Event* event);
   void input();
-  CONSOLE_COMMAND findCommand(std::string command);
-  void executeCommand(CONSOLE_COMMAND command);
+  void executeCommand(std::string command);
   void render(Window* window);
   void close();
 

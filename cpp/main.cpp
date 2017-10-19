@@ -1,5 +1,6 @@
 #include "enums.h"
 #include "game.h"
+#include <algorithm>
 
 int main(int argv, char** args)
 {
@@ -7,6 +8,7 @@ int main(int argv, char** args)
   bool isDone = false;
   Game newGame;
   std::cout << "\n";
+
   newGame.init("./data/settings/window");
 
   while(!isDone)

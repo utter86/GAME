@@ -57,41 +57,27 @@ void Console::input()
   _consoleLog.makeMenu();
   SDL_Rect* tmpRect = _consoleLog.getRect();
   _consoleLog.setPos(_consoleRect->x, _consoleRect->h - tmpRect->h - (_consoleTextSize * 1.5));
-  executeCommand(findCommand(_text.getText()));
+  executeCommand(_text.getText());
   _text.stop();
   _text.start();
 }
-CONSOLE_COMMAND Console::findCommand(std::string command)
+void Console::executeCommand(std::string command)
 {
-  CONSOLE_COMMAND retCmd = UNKNOW;
-  std::string tmpString = command;
-  for(std::string::size_type i = 0; i < tmpString.length(); i++)
+  std::transform(command.begin(), command.end(), command.begin(), toupper);
+  if(command == "EXIT")
   {
-
+    exit(8989);
   }
-  if( tmpString == "EXIT")
+  else
   {
-    retCmd = EXIT;
-  }
-  return retCmd;
-}
-void Console::executeCommand(CONSOLE_COMMAND command)
-{
-  switch(command)
-  {
-    case EXIT:
-      exit(8989);
-    break;
-    default:
-      Button* buttonPtr = new Button;
-      buttonPtr->init(_itemNum);
-      _itemNum++;
-      buttonPtr->setText("UNKNOWN COMMAND", 0, 0, _consoleTextSize, _consoleTextColor);
-      _consoleLog.addButton(buttonPtr);
-      _consoleLog.makeMenu();
-      SDL_Rect* tmpRect = _consoleLog.getRect();
-      _consoleLog.setPos(_consoleRect->x, _consoleRect->h - tmpRect->h - (_consoleTextSize * 1.5));
-    break;
+    Button* buttonPtr = new Button;
+    buttonPtr->init(_itemNum);
+    _itemNum++;
+    buttonPtr->setText("UNKNOWN COMMAND", 0, 0, _consoleTextSize, _consoleTextColor);
+    _consoleLog.addButton(buttonPtr);
+    _consoleLog.makeMenu();
+    SDL_Rect* tmpRect = _consoleLog.getRect();
+    _consoleLog.setPos(_consoleRect->x, _consoleRect->h - tmpRect->h - (_consoleTextSize * 1.5));
   }
 }
 void Console::render(Window* window)
