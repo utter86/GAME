@@ -2,6 +2,7 @@
 
 void TextInput::init()
 {
+  _numeric = false;
   _active = false;
 }
 RET_NUMS TextInput::update(SDL_Event* event)
@@ -9,10 +10,10 @@ RET_NUMS TextInput::update(SDL_Event* event)
   RET_NUMS retNum = RET_FAILED;
   if(_active)
   {
+    std::string tmpString = _text;
     switch(event->type)
     {
       case SDL_TEXTINPUT:
-        std::string tmpString = _text;
         if(tmpString.length() > 30)
         {
           return RET_FULL;
@@ -20,12 +21,33 @@ RET_NUMS TextInput::update(SDL_Event* event)
         strcat(_text, event->text.text);
         retNum = RET_SUCCESS;
       break;
+      case SDL_KEYUP:
+        switch(event->key.keysym.sym)
+        {
+          case SDLK_BACKSPACE:
+            tmpString = tmpString.substr(0, tmpString.length() - 1);
+            strcpy(_text, tmpString.c_str());
+          break;
+        }
+      break;
+    }
+    if(_destText != NULL)
+    {
+      *_destText = _text;
     }
   }
   return retNum;
 }
-void TextInput::start()
+void TextInput::start(std::string* dest, bool numeric)
 {
+  if(dest != NULL)
+  {
+    _destText = dest;
+  }
+  if(numeric)
+  {
+    _numeric = true;
+  }
   _active = true;
   SDL_StartTextInput();
   _text = new char [32];

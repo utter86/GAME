@@ -13,7 +13,7 @@ class TextInput
 public:
   void init();
   RET_NUMS update(SDL_Event* event);
-  void start();
+  void start(std::string* dest = NULL, bool numeric = false);
   void stop();
 
   //Getters
@@ -22,6 +22,8 @@ private:
   bool _active;
   int _txtSize;
   char* _text;
+  std::string* _destText = NULL;
+  bool _numeric;
 
   SDL_Event _events;
 };

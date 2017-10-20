@@ -112,7 +112,7 @@ RET_NUMS TextureEditor::keyUp(int key)
       getInFileRects();
     break;
     case SDLK_F2:
-      _text.start();
+      addRect();
     break;
     case SDLK_F5:
 
@@ -235,7 +235,7 @@ void TextureEditor::addRect()
 {
   if(_inFileRect != NULL)
   {
-
+    _text.start();
     SDL_Rect* tmpRect = new SDL_Rect;
     *tmpRect = {0,0,50,50};
     _window->addTextureRect(IN_FILE, _rectNum, tmpRect);

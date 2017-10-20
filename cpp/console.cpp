@@ -22,12 +22,25 @@ void Console::init(int x, int y, int w, int h)
   _itemNum = 0;
   _inputLine.init(0);
   _inputLine.setBGColor(_consoleTextBackColor);
+
+  createCommands();
+
   //Text input
   _text.init();
   _text.start();
   active = false;
 }
-
+void Console::addTextLog(std::string text)
+{
+  Button* buttonPtr = new Button;
+  buttonPtr->init(_itemNum);
+  _itemNum++;
+  buttonPtr->setText(text, 0, 0, _consoleTextSize, _consoleTextColor);
+  _consoleLog.addButton(buttonPtr);
+  _consoleLog.makeMenu();
+  SDL_Rect* tmpRect = _consoleLog.getRect();
+  _consoleLog.setPos(_consoleRect->x, _consoleRect->h - tmpRect->h - (_consoleTextSize * 1.5));
+}
 RET_NUMS Console::doEvents(SDL_Event* event)
 {
   switch(event->type)
@@ -47,16 +60,20 @@ RET_NUMS Console::doEvents(SDL_Event* event)
   _inputLine.setText(tmpString, 0,0, _consoleTextSize, _consoleTextColor);
   return RET_SUCCESS;
 }
+void Console::createCommands()
+{
+  _commands["EXIT"] = [this]
+  {
+    exit(909);
+  };
+  _commands["UNKNOWN"] = [this]
+  {
+    addTextLog("UNKNOWN COMMAND!");
+  };
+}
 void Console::input()
 {
-  Button* buttonPtr = new Button;
-  buttonPtr->init(_itemNum);
-  _itemNum++;
-  buttonPtr->setText(_text.getText(), 0, 0, _consoleTextSize, _consoleTextColor);
-  _consoleLog.addButton(buttonPtr);
-  _consoleLog.makeMenu();
-  SDL_Rect* tmpRect = _consoleLog.getRect();
-  _consoleLog.setPos(_consoleRect->x, _consoleRect->h - tmpRect->h - (_consoleTextSize * 1.5));
+  addTextLog(_text.getText());
   executeCommand(_text.getText());
   _text.stop();
   _text.start();
@@ -64,20 +81,13 @@ void Console::input()
 void Console::executeCommand(std::string command)
 {
   std::transform(command.begin(), command.end(), command.begin(), toupper);
-  if(command == "EXIT")
+  if(_commands.find(command) != _commands.end())
   {
-    exit(8989);
+    _commands[command]();
   }
   else
   {
-    Button* buttonPtr = new Button;
-    buttonPtr->init(_itemNum);
-    _itemNum++;
-    buttonPtr->setText("UNKNOWN COMMAND", 0, 0, _consoleTextSize, _consoleTextColor);
-    _consoleLog.addButton(buttonPtr);
-    _consoleLog.makeMenu();
-    SDL_Rect* tmpRect = _consoleLog.getRect();
-    _consoleLog.setPos(_consoleRect->x, _consoleRect->h - tmpRect->h - (_consoleTextSize * 1.5));
+    _commands["UNKNOWN"]();
   }
 }
 void Console::render(Window* window)
