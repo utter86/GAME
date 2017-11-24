@@ -28,6 +28,9 @@ RET_NUMS TextInput::update(SDL_Event* event)
             tmpString = tmpString.substr(0, tmpString.length() - 1);
             strcpy(_text, tmpString.c_str());
           break;
+          case SDLK_RETURN:
+            retNum = RET_DONE;
+          break;
         }
       break;
     }
@@ -60,7 +63,10 @@ void TextInput::stop()
   delete _text;
   _text = NULL;
 }
-
+bool TextInput::active()
+{
+    return _active;
+}
 std::string TextInput::getText()
 {
   std::string tmpString = _text;

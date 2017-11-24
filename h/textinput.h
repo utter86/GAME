@@ -15,6 +15,7 @@ public:
   RET_NUMS update(SDL_Event* event);
   void start(std::string* dest = NULL, bool numeric = false);
   void stop();
+  bool active();
 
   //Getters
   std::string getText();
@@ -23,6 +24,10 @@ private:
   int _txtSize;
   char* _text;
   std::string* _destText = NULL;
+
+  int _X;
+  int _Y;
+
   bool _numeric;
 
   SDL_Event _events;

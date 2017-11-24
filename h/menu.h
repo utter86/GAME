@@ -22,9 +22,11 @@ public:
   //Getters
   Button* getButton(int id);
   SDL_Rect* getRect();
+  int getID();
 
   //Setters
   RET_NUMS setPos(int x, int y);
+  RET_NUMS setSize(int w, int h);
   RET_NUMS setBorder(SDL_Color* color = NULL);
   RET_NUMS setBGColor(SDL_Color* color);
   RET_NUMS setTextColor(int id, SDL_Color* color);

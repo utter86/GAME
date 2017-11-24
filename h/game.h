@@ -14,7 +14,7 @@ class Game
 {
 
 public:
-  RET_NUMS init(std::string file);
+  RET_NUMS init(std::string file, Error* error);
   RET_NUMS update();
   void close();
 private:
@@ -26,7 +26,7 @@ private:
   SceneHandler _sceneHandeler;
 
   //Error
-  Error _error;
+  Error* _error = NULL;
 
 };
 

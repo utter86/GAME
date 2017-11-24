@@ -64,10 +64,17 @@ void Console::createCommands()
 {
   _commands["EXIT"] = [this]
   {
+    _error.log("EXIT 909");
     exit(909);
+  };
+  _commands["PRINT LOG"] = [this]
+  {
+    _error.log("LOG PRINTED!");
+    _error.printLog();
   };
   _commands["UNKNOWN"] = [this]
   {
+    _error.log("UNKNOWN COMMAND!");
     addTextLog("UNKNOWN COMMAND!");
   };
 }

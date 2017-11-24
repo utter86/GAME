@@ -1,7 +1,8 @@
 #include "game.h"
 
-RET_NUMS Game::init(std::string file)
+RET_NUMS Game::init(std::string file, Error* error)
 {
+  _error = error;
   WindowSettings windowSettings;
   SDL_RWops* settingsFile = SDL_RWFromFile(file.c_str(), "rb");
   //if file dose not exist make it
@@ -21,23 +22,17 @@ RET_NUMS Game::init(std::string file)
     SDL_RWclose(settingsFile);
     windowSettings = *settings;
   }
-  std::cout << "W: " << windowSettings.w << '\n';
-  std::cout << "H: " << windowSettings.h << '\n';
-  std::cout << "WINDOW: " << windowSettings.windowMode << '\n';
-  std::cout << "VSYNC: " << windowSettings.vsync << '\n';
 
-  _window.init(windowSettings);
-  _sceneHandeler.init(&_window);
+  _window.init(windowSettings, _error);
+  _sceneHandeler.init(&_window, _error);
   return RET_SUCCESS;
 }
-
 RET_NUMS Game::update()
 {
   RET_NUMS retNum = RET_FAILED;
   retNum = _sceneHandeler.update(&_window);
   return retNum;
 }
-
 void Game::close()
 {
   _window.close();

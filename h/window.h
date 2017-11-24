@@ -21,7 +21,7 @@ struct WindowSettings
 class Window
 {
 public:
-  RET_NUMS init(WindowSettings settings);
+  RET_NUMS init(WindowSettings settings, Error* error);
 
   RET_NUMS loadMedia();
   void loadFileOld(TEXTURE_ID id, std::string file);
@@ -63,7 +63,7 @@ private:
   TextureFolder _textureFolder;
 
   //Error
-  Error _error;
+  Error* _error = NULL;
 };
 
 #endif //WINDOW_H

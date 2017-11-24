@@ -1,10 +1,12 @@
 #include "scenehandler.h"
 
 //Public
-RET_NUMS SceneHandler::init(Window* window)
+RET_NUMS SceneHandler::init(Window* window, Error* error)
 {
-  SDL_Rect tmpRect = *window->getRect();
+  _error = error;
   _window = window;
+
+  SDL_Rect tmpRect = *window->getRect();
   _console.init(0, 0, tmpRect.w, tmpRect.h / 2);
   initScene(TEXTURE_EDITOR);
   return RET_SUCCESS;
@@ -15,7 +17,6 @@ RET_NUMS SceneHandler::update(Window* window)
   render(window);
   return retNum;
 }
-
 //Private
 RET_NUMS SceneHandler::initScene(SCENE scene)
 {
@@ -27,6 +28,9 @@ RET_NUMS SceneHandler::initScene(SCENE scene)
     break;
     case TEXTURE_EDITOR:
       _textureEditor.init(_window);
+    break;
+    case COMBAT:
+      _combat.init(_window);
     break;
   }
   return RET_SUCCESS;
@@ -50,7 +54,7 @@ RET_NUMS SceneHandler::doEvents()
       }
       else
       {
-          std::cout << "CONOSOLE ON!\n";
+        std::cout << "CONOSOLE ON!\n";
         _console.active = true;
       }
     }
@@ -67,6 +71,9 @@ RET_NUMS SceneHandler::doEvents()
         case TEXTURE_EDITOR:
           retNum = _textureEditor.doEvents(&_events);
         break;
+        case COMBAT:
+          retNum = _combat.doEvents(&_events);
+        break;
         default:
           std::cout << "BLÄ\n";
         break;
@@ -75,7 +82,6 @@ RET_NUMS SceneHandler::doEvents()
   }
   return retNum;
 }
-
 void SceneHandler::render(Window* window)
 {
   switch(_activeScene)
@@ -85,6 +91,9 @@ void SceneHandler::render(Window* window)
     break;
     case TEXTURE_EDITOR:
       _textureEditor.render();
+    break;
+    case COMBAT:
+      _combat.render();
     break;
   }
 

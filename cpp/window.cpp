@@ -1,26 +1,27 @@
 #include "window.h"
 
 
-RET_NUMS Window::init(WindowSettings settings)
+RET_NUMS Window::init(WindowSettings settings, Error* error)
 {
+  _error = error;
   //Init SDL
   if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
   {
-    _error.error("FAILED TO INIT SDL!", SDL_GetError());
+    _error->error("FAILED TO INIT SDL!", SDL_GetError());
   }
   //Init Png loading
   int initFlag = IMG_INIT_PNG;
   int initted = IMG_Init(initFlag);
   if((initted&initFlag) != initFlag)
   {
-    _error.error("Failed to initialize SDL_image", IMG_GetError());
+    _error->error("Failed to initialize SDL_image", IMG_GetError());
   }
 
   //Create window
   _window = SDL_CreateWindow("-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, settings.w, settings.h, SDL_WINDOW_ALLOW_HIGHDPI | settings.windowMode);
   if(_window == NULL)
   {
-    _error.error("FAILED TO CREATE WINDOW!", SDL_GetError());
+    _error->error("FAILED TO CREATE WINDOW!", SDL_GetError());
   }
 
   //Create renderer
@@ -34,7 +35,7 @@ RET_NUMS Window::init(WindowSettings settings)
   }
   if(_renderer == NULL)
   {
-    _error.error("FAILED TO CREATE RENDERER!", SDL_GetError());
+    _error->error("FAILED TO CREATE RENDERER!", SDL_GetError());
   }
   SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 
@@ -174,7 +175,7 @@ void Window::loadPNG(TEXTURE_ID id, std::string file)
   tmpSurface = IMG_Load(file.c_str());
   if (tmpSurface == NULL)
   {
-    _error.error("Failed to load image", IMG_GetError());
+    _error->error("Failed to load image", IMG_GetError());
   }
   else
   {
@@ -185,7 +186,7 @@ void Window::loadPNG(TEXTURE_ID id, std::string file)
     tmpTexture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
     if(tmpTexture == NULL)
     {
-      _error.error("Failed to creat Texture from surface", SDL_GetError());
+      _error->error("Failed to creat Texture from surface", SDL_GetError());
       exit(-1);
     }
     else
@@ -212,7 +213,7 @@ SDL_Texture* Window::createTexture(std::string file)
   tmpSurface = IMG_Load(file.c_str());
   if (tmpSurface == NULL)
   {
-    _error.error("Failed to load image", IMG_GetError());
+    _error->error("Failed to load image", IMG_GetError());
   }
   else
   {
@@ -223,7 +224,7 @@ SDL_Texture* Window::createTexture(std::string file)
     tmpTexture = SDL_CreateTextureFromSurface(_renderer, tmpSurface);
     if(tmpTexture == NULL)
     {
-      _error.error("Failed to creat Texture from surface", SDL_GetError());
+      _error->error("Failed to creat Texture from surface", SDL_GetError());
       exit(-1);
     }
     else

@@ -47,14 +47,15 @@ RET_NUMS GameObject::render(Window* window)
   }
   if(_text.length() > 0)
   {
+    int textW = _textSize * _text.length();
+    int textH = _textSize * 1.5;
+
     if(_textX == -1)
     {
-      int textW = _textSize * _text.length();
       _textX = _objectRect.w / 2 - textW / 2;
     }
     if(_textY == -1)
     {
-      int textH = _textSize * 1.5;
       _textY = _objectRect.h / 2 - textH / 2;
     }
     window->renderText(_text, _textX, _textY, _textSize, &_textColor, &_objectRect);
