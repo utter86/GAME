@@ -49,11 +49,14 @@ RET_NUMS Menu::addButton(Button* button)
   RET_NUMS retNum = RET_FAILED;
   if(button != NULL)
   {
-    if(getButton(button->getID()) == NULL)
+    if(getButtonFromFocusNum(button->getFocusNum()) != NULL)
+    {
+      _error.error("Focus Num taken!", SDL_GetError());
+    }
+    else
     {
       button->setViewport(_menuRect);
       _buttonVector.push_back(button);
-      retNum = RET_SUCCESS;
     }
   }
   return retNum;
@@ -83,6 +86,12 @@ RET_NUMS Menu::makeMenu(bool xAxis)
   delete tmpRect;
   return RET_SUCCESS;
 }
+RET_NUMS Menu::setFocus(int num)
+{
+  RET_NUMS retNum = RET_SUCCESS;
+  _focusNum = num;
+  return retNum;
+}
 
 void Menu::clearMenu()
 {
@@ -109,6 +118,17 @@ Button* Menu::getButton(int id)
   for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
   {
     if((*it)->getID() == id)
+    {
+      return (*it);
+    }
+  }
+  return NULL;
+}
+Button* Menu::getButtonFromFocusNum(int num)
+{
+  for(std::vector<Button*>::iterator it = _buttonVector.begin(); it != _buttonVector.end(); it++)
+  {
+    if((*it)->getFocusNum() == num)
     {
       return (*it);
     }

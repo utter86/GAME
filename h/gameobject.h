@@ -8,7 +8,7 @@
 class GameObject
 {
 public:
-  RET_NUMS init(int id);
+  RET_NUMS init(int id, int tabNum);
 
   bool mouseMove();
 
@@ -18,6 +18,7 @@ public:
 
   //Getters
   int getID();
+  int getFocusNum();
   SDL_Rect* getRect();
 
   //Setters
@@ -34,6 +35,7 @@ public:
 
 private:
   int _id;
+  int _tabNum;
   bool _border;
 
   //Texture stuff

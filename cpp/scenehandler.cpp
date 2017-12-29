@@ -8,7 +8,7 @@ RET_NUMS SceneHandler::init(Window* window, Error* error)
 
   SDL_Rect tmpRect = *window->getRect();
   _console.init(0, 0, tmpRect.w, tmpRect.h / 2);
-  initScene(TEXTURE_EDITOR);
+  initScene(COMBAT);
   return RET_SUCCESS;
 }
 RET_NUMS SceneHandler::update(Window* window)
@@ -24,7 +24,7 @@ RET_NUMS SceneHandler::initScene(SCENE scene)
   switch(_activeScene)
   {
     case MAIN_MENU:
-      //_mainMenu.init();
+      _mainMenu.init(_window);
     break;
     case TEXTURE_EDITOR:
       _textureEditor.init(_window);
@@ -74,8 +74,11 @@ RET_NUMS SceneHandler::doEvents()
         case COMBAT:
           retNum = _combat.doEvents(&_events);
         break;
+        case MAIN_MENU:
+          //retNum = _mainMenu.doEvents(&_events);
+        break;
         default:
-          std::cout << "BLÄ\n";
+          std::cout << "BLÃ„\n";
         break;
       }
     }
@@ -87,7 +90,7 @@ void SceneHandler::render(Window* window)
   switch(_activeScene)
   {
     case MAIN_MENU:
-      //_mainMenu.render(window);
+      _mainMenu.render();
     break;
     case TEXTURE_EDITOR:
       _textureEditor.render();

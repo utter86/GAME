@@ -8,11 +8,12 @@
 class MainMenu
 {
 public:
-  RET_NUMS init();
-  RET_NUMS render(Window* window);
+  RET_NUMS init(Window* window);
+  RET_NUMS render();
 
 private:
   Error _error;
+  Window* _window = NULL;
 };
 
 #endif //MAINMENU_H

@@ -1,10 +1,11 @@
 #include "gameobject.h"
 
 
-RET_NUMS GameObject::init(int id)
+RET_NUMS GameObject::init(int id, int tabNum)
 {
   close();
   _id = id;
+  _tabNum = tabNum;
   _objectRect = {0, 0, 0, 0};
   _objX = 0;
   _objY = 0;
@@ -12,6 +13,8 @@ RET_NUMS GameObject::init(int id)
   _borderColor = {255, 0, 0, 255};
   _bgColor = {0, 0, 0, 0};
   _textColor = {255,0,0,255};
+  _angle = 0.0f;
+  _flip = SDL_FLIP_NONE;
   return RET_SUCCESS;
 }
 
@@ -43,7 +46,7 @@ RET_NUMS GameObject::render(Window* window)
   window->fillRect(&_objectRect, &_bgColor);
   if(_textId != NONE)
   {
-    window->render(_textId, _start, _stop, &_textureDestRect, &_objectRect);
+    window->render(_textId, _start, _stop, &_textureDestRect, &_objectRect, _angle, _flip);
   }
   if(_text.length() > 0)
   {
@@ -90,6 +93,10 @@ int GameObject::getID()
 {
   return _id;
 }
+int GameObject::getFocusNum()
+{
+  return _tabNum;
+}
 SDL_Rect* GameObject::getRect()
 {
   return &_objectRect;
@@ -104,6 +111,8 @@ void GameObject::setTexture(TEXTURE_ID ID, int start, int stop, SDL_Rect dstRect
   _textureX = dstRect.x;
   _textureY = dstRect.y;
   _textureDestRect = dstRect;
+  _angle = angle;
+  _flip = flip;
 }
 void GameObject::setText(std::string text, int x, int y, int size, SDL_Color* color)
 {

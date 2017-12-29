@@ -1,25 +1,28 @@
 #include "mainmenu.h"
 
-RET_NUMS MainMenu::init()
+RET_NUMS MainMenu::init(Window* window)
 {
+  _window = window;
   return RET_SUCCESS;
 }
 
-RET_NUMS MainMenu::render(Window* window)
+RET_NUMS MainMenu::render()
 {
-  int x, y;
-  SDL_GetMouseState(&x, &y);
+  if(_window != NULL)
+  {
+    int x, y;
+    SDL_GetMouseState(&x, &y);
 
-  SDL_Color color = {255, 0, 0, 255};
-  SDL_Rect tmpRect = {x - 25, y-25, 50, 50};
+    SDL_Color color = {255, 0, 0, 255};
+    SDL_Rect tmpRect = {x - 25, y-25, 50, 50};
 
-  window->render(BACK, 0,0, NULL, NULL);
-  window->drawBorder(window->getRect(), &color);
+    _window->render(BACK, 0,0, NULL, NULL);
+    _window->drawBorder(_window->getRect(), &color);
 
-  window->render(TEST, 1, 4, &tmpRect, NULL);
-  window->drawBorder(&tmpRect, &color);
+    _window->render(TEST, 1, 4, &tmpRect, NULL);
+    _window->drawBorder(&tmpRect, &color);
 
-  window->render();
-
+    _window->render();
+  }
   return RET_SUCCESS;
 }

@@ -54,6 +54,8 @@ RET_NUMS Window::loadMedia()
   loadFileOld(TEST, "./data/texture/test.text");
   loadFileOld(ALPHA, "./data/texture/alpha2.text");
   loadFileOld(BACK, "./data/texture/bg.text");
+  loadFileOld(ARROW, "./data/texture/arrow.text");
+  loadFileOld(BUTTON, "./data/texture/button.text");
   return RET_SUCCESS;
 }
 void Window::loadFileOld(TEXTURE_ID id, std::string file)
@@ -69,46 +71,36 @@ void Window::loadFileOld(TEXTURE_ID id, std::string file)
   textureFile.open (file);
   while(getline(textureFile,line))
   {
+    pos1 = line.find(":");
+    pos2 = line.find(";");
     if(line.find("TEXTURE:") != std::string::npos)
     {
-      pos1 = line.find(":");
-      pos2 = line.find(";");
       valStr = "./data/texture/";
       valStr.append(line.substr(pos1 + 1, pos2 - pos1 - 1));
       _textureFolder.addTexture(id, createTexture(valStr));
     }
     else if(line.find("RECT:") != std::string::npos)
     {
-      pos1 = line.find(":");
-      pos2 = line.find(";");
       valStr = line.substr(pos1 + 1, pos2 - pos1 -1);
       rectNum = atoi(valStr.c_str());
     }
     else if(line.find("X:") != std::string::npos)
     {
-      pos1 = line.find(":");
-      pos2 = line.find(";");
       valStr = line.substr(pos1 + 1, pos2 - pos1 -1);
       rectX = atoi(valStr.c_str());
     }
     else if(line.find("Y:") != std::string::npos)
     {
-      pos1 = line.find(":");
-      pos2 = line.find(";");
       valStr = line.substr(pos1 + 1, pos2 - pos1 -1);
       rectY = atoi(valStr.c_str());
     }
     else if(line.find("W:") != std::string::npos)
     {
-      pos1 = line.find(":");
-      pos2 = line.find(";");
       valStr = line.substr(pos1 + 1, pos2 - pos1 -1);
       rectW = atoi(valStr.c_str());
     }
     else if(line.find("H:") != std::string::npos)
     {
-      pos1 = line.find(":");
-      pos2 = line.find(";");
       valStr = line.substr(pos1 + 1, pos2 - pos1 -1);
       rectH = atoi(valStr.c_str());
       SDL_Rect* tmpRect = new SDL_Rect;

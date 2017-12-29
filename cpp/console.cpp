@@ -20,7 +20,7 @@ void Console::init(int x, int y, int w, int h)
   _consoleLog.init(0);
   _consoleLog.active = true;
   _itemNum = 0;
-  _inputLine.init(0);
+  _inputLine.init(0, 0);
   _inputLine.setBGColor(_consoleTextBackColor);
 
   createCommands();
@@ -33,7 +33,7 @@ void Console::init(int x, int y, int w, int h)
 void Console::addTextLog(std::string text)
 {
   Button* buttonPtr = new Button;
-  buttonPtr->init(_itemNum);
+  buttonPtr->init(_itemNum, _itemNum);
   _itemNum++;
   buttonPtr->setText(text, 0, 0, _consoleTextSize, _consoleTextColor);
   _consoleLog.addButton(buttonPtr);
@@ -117,4 +117,3 @@ void Console::setConsoleColor(SDL_Color* color)
 {
   *_consoleColor = *color;
 }
-

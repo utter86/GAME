@@ -137,10 +137,11 @@ RET_NUMS TextureEditor::keyUp(int key)
 RET_NUMS TextureEditor::click(int button)
 {
   RET_NUMS retNum = RET_SUCCESS;
-  if(addRectClick() != RET_FAILED)
+  if(topMenuClick() == RET_FAILED)
   {
-    retNum = topMenuClick();
+    return RET_FAILED;
   }
+  addRectClick();
   return retNum;
 }
 RET_NUMS TextureEditor::topMenuClick()
@@ -194,6 +195,7 @@ RET_NUMS TextureEditor::addRectClick()
 
 RET_NUMS TextureEditor::textUpdate(SDL_Event* event)
 {
+  _text.update(event);
   return RET_FAILED;
 }
 
@@ -224,11 +226,11 @@ RET_NUMS TextureEditor::setMainMenu()
     switch(i)
     {
       case LOAD_IMAGE:
-        buttonPtr->init(LOAD_IMAGE);
+        buttonPtr->init(LOAD_IMAGE, 0);
         buttonPtr->setText("LOAD IMAGE", 0, 0, XSMALL);
       break;
       case CLOSE:
-        buttonPtr->init(CLOSE);
+        buttonPtr->init(CLOSE, 1);
         buttonPtr->setText("CLOSE", -1, -1, XLARGE);
       break;
     }
@@ -278,7 +280,7 @@ RET_NUMS TextureEditor::setAddRectMenu()
 
   //Add dimensions lbls
   buttonPtr = new Button;
-  buttonPtr->init(LBL_X);
+  buttonPtr->init(LBL_X, 0);
   buttonPtr->setText("X: 9999", -1, -1, LARGE);
   buttRect = *buttonPtr->getRect();
   newX = menuRect.w / 2 - buttRect.w / 2;
@@ -287,7 +289,7 @@ RET_NUMS TextureEditor::setAddRectMenu()
   tmpMenu.addButton(buttonPtr);
 
   buttonPtr = new Button;
-  buttonPtr->init(LBL_Y);
+  buttonPtr->init(LBL_Y, 1);
   buttonPtr->setText("Y: 9999", -1, -1, LARGE);
   buttRect = *buttonPtr->getRect();
   buttonPtr->setPos(newX, newY);
@@ -295,7 +297,7 @@ RET_NUMS TextureEditor::setAddRectMenu()
   tmpMenu.addButton(buttonPtr);
 
   buttonPtr = new Button;
-  buttonPtr->init(LBL_W);
+  buttonPtr->init(LBL_W, 2);
   buttonPtr->setText("W: 9999", -1, -1, LARGE);
   buttRect = *buttonPtr->getRect();
   buttonPtr->setPos(newX, newY);
@@ -303,7 +305,7 @@ RET_NUMS TextureEditor::setAddRectMenu()
   tmpMenu.addButton(buttonPtr);
 
   buttonPtr = new Button;
-  buttonPtr->init(LBL_H);
+  buttonPtr->init(LBL_H, 3);
   buttonPtr->setText("H: 9999", -1, -1, LARGE);
   buttRect = *buttonPtr->getRect();
   buttonPtr->setPos(newX, newY);
@@ -313,7 +315,7 @@ RET_NUMS TextureEditor::setAddRectMenu()
   //Add buttons
   *colorPtr = {255, 0, 0, 255};
   buttonPtr = new Button;
-  buttonPtr->init(CANCEL);
+  buttonPtr->init(CANCEL, 5);
   buttonPtr->setText("CANCEL", -1, -1, LARGE);
   buttRect = *buttonPtr->getRect();
   newX = menuRect.w/2 + 2;
@@ -323,7 +325,7 @@ RET_NUMS TextureEditor::setAddRectMenu()
   tmpMenu.addButton(buttonPtr);
 
   buttonPtr = new Button;
-  buttonPtr->init(OK);
+  buttonPtr->init(OK, 4);
   buttonPtr->setText(" OKAY ", -1, -1, LARGE);
   buttRect = *buttonPtr->getRect();
   newX = menuRect.w/2 - buttRect.w;
@@ -375,6 +377,8 @@ void TextureEditor::addRect()
   if(tmpMenu != NULL)
   {
     tmpMenu->active = true;
+    tmpMenu->setFocus(0);
+    _text.start();
   }
 }
 void TextureEditor::makeGrid()

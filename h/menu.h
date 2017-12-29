@@ -15,12 +15,14 @@ public:
 
   RET_NUMS addButton(Button* button);
   RET_NUMS makeMenu(bool xAxis = false);
+  RET_NUMS setFocus(int num);
 
   void clearMenu();
   void close();
 
   //Getters
   Button* getButton(int id);
+  Button* getButtonFromFocusNum(int num);
   SDL_Rect* getRect();
   int getID();
 
@@ -35,6 +37,7 @@ public:
 
 private:
   int _id;
+  int _focusNum;
   bool _border;
   SDL_Color _borderColor;
   SDL_Color _bgColor;
